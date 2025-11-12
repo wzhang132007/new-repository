@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orange - Multi-page Design</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jacquard+12&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Page 1 -->
+    <div id="pg1" class="page active" data-name="pg1" data-node-id="1:3">
+        <div class="house-fly-lg" data-name="house-fly-lg1" data-node-id="3:10">
+            <img src="https://www.figma.com/api/mcp/asset/c911d313-4907-428b-be24-41fa155fac05" alt="House Fly Large" />
+        </div>
+        <a href="#" class="page-text" data-node-id="3:14" onclick="navigateTo('pg2'); return false;">
+            <p>text test</p>
+        </a>
+    </div>
+
+    <!-- Page 2 -->
+    <div id="pg2" class="page" data-name="pg2" data-node-id="6:2">
+        <a href="#" class="page-link" onclick="navigateTo('pg3'); return false;">
+            <div class="page-text" data-node-id="6:4">
+                <p>text test</p>
+            </div>
+        </a>
+    </div>
+
+    <!-- Page 3 -->
+    <div id="pg3" class="page" data-name="pg3" data-node-id="6:10">
+        <div class="house-fly-sm" data-name="house-fly-sm1" data-node-id="6:11">
+            <img src="https://www.figma.com/api/mcp/asset/5e51d5e7-ca96-4011-80af-4cde94a66547" alt="House Fly Small" />
+        </div>
+        <a href="#" class="page-text" data-node-id="6:12" onclick="navigateTo('pg1'); return false;">
+            <p>text test</p>
+        </a>
+        <div class="drawing" data-name="drawing1" data-node-id="6:67">
+            <div class="drawing-inner">
+                <img src="https://www.figma.com/api/mcp/asset/f4d0323f-9080-4a11-a701-70002a38d8e5" alt="Drawing" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Controls (optional, for easier testing) -->
+    <div class="nav-controls">
+        <button onclick="navigateTo('pg1')">Page 1</button>
+        <button onclick="navigateTo('pg2')">Page 2</button>
+        <button onclick="navigateTo('pg3')">Page 3</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

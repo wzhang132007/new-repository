@@ -1,0 +1,190 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Jacquard 12', sans-serif;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Page Container */
+.page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 1440px;
+    height: 1024px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+    transform-origin: center;
+}
+
+.page.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+}
+
+/* Page 1 Styles */
+#pg1 {
+    background-color: white;
+}
+
+.house-fly-lg {
+    position: absolute;
+    width: 1820px;
+    height: 1024px;
+    left: -134px;
+    top: 0;
+}
+
+.house-fly-lg img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    pointer-events: none;
+    max-width: none;
+}
+
+/* Page 2 Styles */
+#pg2 {
+    background-color: #575039;
+}
+
+#pg2 .page-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* Page 3 Styles */
+#pg3 {
+    background-color: white;
+}
+
+.house-fly-sm {
+    position: absolute;
+    width: 502px;
+    height: 283px;
+    left: 769px;
+    top: 665px;
+}
+
+.house-fly-sm img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    pointer-events: none;
+    max-width: none;
+}
+
+.drawing {
+    position: absolute;
+    width: 432.371px;
+    height: 233.984px;
+    left: 102.43px;
+    top: 77px;
+}
+
+.drawing-inner {
+    position: absolute;
+    inset: -3.21% -1.73%;
+}
+
+.drawing-inner img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+}
+
+/* Text Styles (common for all pages) */
+.page-text {
+    position: absolute;
+    display: block;
+    cursor: pointer;
+    font-family: 'Jacquard 12', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    color: #060405;
+    font-size: 200px;
+    line-height: 1;
+    left: 419px;
+    top: 412px;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.page-text:hover {
+    transform: scale(1.05);
+    opacity: 0.8;
+}
+
+.page-text p {
+    line-height: normal;
+}
+
+/* Navigation Controls (bottom right) */
+.nav-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.nav-controls button {
+    padding: 10px 20px;
+    background: #ff6b35;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.nav-controls button:hover {
+    background: #ff8555;
+    transform: translateY(-2px);
+}
+
+.nav-controls button:active {
+    transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1440px) {
+    .page {
+        transform: scale(0.7);
+        transform-origin: top left;
+    }
+}
+
+@media (max-width: 1024px) {
+    .page {
+        transform: scale(0.5);
+        transform-origin: top left;
+    }
+}
