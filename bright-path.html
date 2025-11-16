@@ -52,27 +52,15 @@
         }
 
         #section2 {
-            background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
-        }
-
-        #section3 {
             background: linear-gradient(135deg, #e1f5fe 0%, #e8eaf6 100%);
         }
 
-        #section4 {
+        #section3 {
             background: linear-gradient(135deg, #fff9c4 0%, #ffe0b2 100%);
         }
 
-        #section5 {
+        #section4 {
             background: linear-gradient(135deg, #f1f8e9 0%, #dcedc8 100%);
-        }
-
-        #section6 {
-            background: linear-gradient(135deg, #fce4ec 0%, #ffebee 100%);
-        }
-
-        #section7 {
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
         }
 
         /* ========== COMMON ELEMENTS ========== */
@@ -210,80 +198,7 @@
             50% { transform: translateY(-25px); }
         }
 
-        /* ========== SECTION 2 - ABOUT ========== */
-        .about-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
-            margin: 30px 0;
-        }
-
-        .about-text {
-            line-height: 2;
-            font-size: 1.1em;
-        }
-
-        .about-text p {
-            margin-bottom: 18px;
-            color: #4a4a4a;
-        }
-
-        .about-icons {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            align-items: center;
-        }
-
-        .icon-item {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3.5em;
-            transition: transform 0.3s ease;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-        }
-
-        .icon-item:hover {
-            transform: scale(1.15) rotate(5deg);
-        }
-
-        .icon-music { background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); }
-        .icon-light { background: linear-gradient(135deg, #fab1a0 0%, #ff7675 100%); }
-        .icon-puzzle { background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); }
-
-        .badges {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            background: linear-gradient(135deg, #e1bee7 0%, #ce93d8 100%);
-            padding: 15px 28px;
-            border-radius: 25px;
-            font-size: 1em;
-            font-weight: 600;
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 15px rgba(206, 147, 216, 0.4);
-        }
-
-        .badge:hover {
-            animation: pulse 0.6s ease-in-out;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.12); }
-        }
-
-        /* ========== SECTION 3 - PIANO ========== */
+        /* ========== SECTION 2 - PIANO ========== */
         .piano-container {
             margin: 40px 0;
         }
@@ -377,7 +292,7 @@
             border-color: #fdcb6e;
         }
 
-        /* ========== SECTION 4 - BEDROOM LIGHT ========== */
+        /* ========== SECTION 3 - BEDROOM LIGHT ========== */
         .bedroom-scene {
             position: relative;
             height: 350px;
@@ -496,7 +411,7 @@
             margin-top: 20px;
         }
 
-        /* ========== SECTION 5 - MATCHING GAME ========== */
+        /* ========== SECTION 4 - MATCHING GAME ========== */
         .matching-game {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -597,203 +512,26 @@
             clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
         }
 
-        /* ========== SECTION 6 - SCENARIO ========== */
-        .scenario-panels {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin: 40px 0;
-        }
-
-        .panel {
-            background: #f5f5f5;
-            border-radius: 25px;
-            padding: 40px;
+        /* ========== COMPLETION MESSAGE ========== */
+        .completion-message {
             text-align: center;
-            transition: all 0.5s ease;
-            min-height: 300px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .panel.highlight {
+            margin-top: 40px;
+            padding: 30px;
             background: linear-gradient(135deg, #fff9c4 0%, #ffeaa7 100%);
-            transform: scale(1.08);
+            border-radius: 25px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.2);
         }
 
-        .character {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 25px;
-        }
-
-        .character-head {
-            width: 70px;
-            height: 70px;
-            background: #ffccbc;
-            border-radius: 50%;
-            margin: 0 auto 12px;
-            position: relative;
-        }
-
-        .character-eyes {
-            position: absolute;
-            top: 23px;
-            left: 17px;
-            display: flex;
-            gap: 12px;
-        }
-
-        .eye {
-            width: 10px;
-            height: 10px;
-            background: #4a4a4a;
-            border-radius: 50%;
-        }
-
-        .character-mouth {
-            position: absolute;
-            bottom: 18px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 24px;
-            height: 12px;
-            border-bottom: 4px solid #4a4a4a;
-        }
-
-        .character-mouth.happy {
-            border-bottom: none;
-            border-top: 4px solid #4a4a4a;
-            border-radius: 0 0 24px 24px;
-        }
-
-        .character-body {
-            width: 50px;
-            height: 50px;
-            background: #a1c4fd;
-            margin: 0 auto;
-            border-radius: 12px;
-        }
-
-        .emotion-icon {
-            font-size: 3.5em;
+        .completion-message h3 {
+            font-size: 2em;
+            color: #ff6b9d;
             margin-bottom: 15px;
         }
 
-        .panel-text {
+        .completion-message p {
             font-size: 1.2em;
             color: #4a4a4a;
             line-height: 1.8;
-        }
-
-        .scenario-buttons {
-            display: flex;
-            gap: 25px;
-            justify-content: center;
-            margin: 40px 0;
-            flex-wrap: wrap;
-        }
-
-        .parent-note {
-            background: rgba(161, 196, 253, 0.25);
-            padding: 20px;
-            border-radius: 20px;
-            text-align: center;
-            font-style: italic;
-            margin-top: 25px;
-            color: #5c6bc0;
-            font-size: 1.1em;
-        }
-
-        /* ========== SECTION 7 - ENDING ========== */
-        .ending-content {
-            text-align: center;
-        }
-
-        .ending-illustration {
-            margin: 40px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
-        }
-
-        .parent-child-icon {
-            display: flex;
-            align-items: flex-end;
-            gap: 15px;
-        }
-
-        .parent-figure {
-            width: 100px;
-            height: 150px;
-            background: linear-gradient(135deg, #7986cb 0%, #5c6bc0 100%);
-            border-radius: 18px 18px 0 0;
-            position: relative;
-        }
-
-        .parent-figure::before {
-            content: '';
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            background: #ffccbc;
-            border-radius: 50%;
-        }
-
-        .child-figure {
-            width: 75px;
-            height: 110px;
-            background: linear-gradient(135deg, #ffb6c1 0%, #ff8fab 100%);
-            border-radius: 18px 18px 0 0;
-            position: relative;
-        }
-
-        .child-figure::before {
-            content: '';
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 50px;
-            background: #ffccbc;
-            border-radius: 50%;
-        }
-
-        .parent-tips {
-            text-align: left;
-            margin: 40px auto;
-            max-width: 700px;
-        }
-
-        .tip-item {
-            background: white;
-            padding: 20px 25px;
-            margin: 18px 0;
-            border-radius: 18px;
-            border-left: 6px solid #66bb6a;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            font-size: 1.05em;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
-        }
-
-        .tip-item:hover {
-            background: #f1f8e9;
-            transform: translateX(8px);
-        }
-
-        .tip-item::before {
-            content: '💡 ';
-            margin-right: 12px;
         }
 
         /* ========== RESPONSIVE ========== */
@@ -810,9 +548,7 @@
                 font-size: 2em;
             }
 
-            .about-layout,
-            .matching-game,
-            .scenario-panels {
+            .matching-game {
                 grid-template-columns: 1fr;
             }
 
@@ -840,38 +576,12 @@
             <p class="cover-dedication">
                 "This book is made for young artists who feel the world in special ways."
             </p>
-            <button class="button" onclick="scrollToNext()">Start Reading</button>
+            <button class="button" onclick="goToSection('section2')">Start Reading</button>
         </div>
     </section>
 
-    <!-- Section 2 - About -->
+    <!-- Section 2 - Piano of Feelings -->
     <section id="section2" class="section">
-        <div class="section-content">
-            <h2 class="section-title">About Bright Path</h2>
-            <div class="about-layout">
-                <div class="about-text">
-                    <p>Bright Path was inspired by volunteering at a psychiatric hospital and learning about art therapy for autistic children.</p>
-                    <p>This interactive book uses:</p>
-                    <p><strong>🎵 Music</strong> to soothe emotions and express feelings</p>
-                    <p><strong>💡 Light</strong> to practice focus and cause-and-effect</p>
-                    <p><strong>🧩 Games & Stories</strong> to support social skills and confidence</p>
-                </div>
-                <div class="about-icons">
-                    <div class="icon-item icon-music">🎹</div>
-                    <div class="icon-item icon-light">💡</div>
-                    <div class="icon-item icon-puzzle">🧩</div>
-                </div>
-            </div>
-            <div class="badges">
-                <div class="badge">3–6 years old</div>
-                <div class="badge">Sensory-friendly</div>
-                <div class="badge">Play together with family</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 3 - Piano of Feelings -->
-    <section id="section3" class="section">
         <div class="section-content">
             <h2 class="section-title">Chapter 1 – Piano of Feelings</h2>
             <p class="section-instruction">
@@ -889,8 +599,8 @@
         </div>
     </section>
 
-    <!-- Section 4 - Bedroom of Light -->
-    <section id="section4" class="section">
+    <!-- Section 3 - Bedroom of Light -->
+    <section id="section3" class="section">
         <div class="section-content">
             <h2 class="section-title">Chapter 2 – Bedroom of Light</h2>
             <p class="section-instruction">
@@ -915,8 +625,8 @@
         </div>
     </section>
 
-    <!-- Section 5 - Match the Shapes -->
-    <section id="section5" class="section">
+    <!-- Section 4 - Match the Shapes -->
+    <section id="section4" class="section">
         <div class="section-content">
             <h2 class="section-title">Chapter 3 – Match the Shapes</h2>
             <p class="section-instruction">
@@ -944,83 +654,6 @@
         </div>
     </section>
 
-    <!-- Section 6 - Scenario Story -->
-    <section id="section6" class="section">
-        <div class="section-content">
-            <h2 class="section-title">Scenario – Sharing Feelings</h2>
-            <p class="section-instruction">
-                One day, a child feels nervous at school. They learn to share their feelings.
-            </p>
-            <div class="scenario-panels">
-                <div class="panel" id="panel1">
-                    <div class="emotion-icon">☁️</div>
-                    <div class="character">
-                        <div class="character-head">
-                            <div class="character-eyes">
-                                <div class="eye"></div>
-                                <div class="eye"></div>
-                            </div>
-                            <div class="character-mouth"></div>
-                        </div>
-                        <div class="character-body"></div>
-                    </div>
-                    <div class="panel-text">
-                        "I feel scared and upset."
-                    </div>
-                </div>
-                <div class="panel" id="panel2">
-                    <div class="emotion-icon">💡</div>
-                    <div class="character">
-                        <div class="character-head">
-                            <div class="character-eyes">
-                                <div class="eye"></div>
-                                <div class="eye"></div>
-                            </div>
-                            <div class="character-mouth happy"></div>
-                        </div>
-                        <div class="character-body"></div>
-                    </div>
-                    <div class="panel-text">
-                        "I talked about it. I feel better now!"
-                    </div>
-                </div>
-            </div>
-            <div class="scenario-buttons">
-                <button class="button" onclick="selectScenario('upset')">I feel upset</button>
-                <button class="button" onclick="selectScenario('better')">I feel better now</button>
-            </div>
-            <div class="parent-note">
-                Parents: Read the speech bubbles and ask your child how they feel today.
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 7 - Ending -->
-    <section id="section7" class="section">
-        <div class="section-content ending-content">
-            <h2 class="section-title">Thank You for Reading Bright Path</h2>
-            <div class="ending-illustration">
-                <div class="parent-child-icon">
-                    <div class="parent-figure"></div>
-                    <div class="child-figure"></div>
-                </div>
-            </div>
-            <div class="parent-tips">
-                <h3 style="text-align: center; color: #7986cb; margin-bottom: 25px; font-size: 1.5em;">Tips for Parents</h3>
-                <div class="tip-item">
-                    Use the piano page to talk about feelings connected to sounds.
-                </div>
-                <div class="tip-item">
-                    Use the light page to practice focus and cause-and-effect.
-                </div>
-                <div class="tip-item">
-                    Use the matching and story pages to practice turn-taking and simple social situations.
-                </div>
-            </div>
-            <button class="button" onclick="scrollToTop()">Restart the Book</button>
-        </div>
-    </section>
-
     <script>
         // ========== GLOBAL STATE ==========
         let audioContext;
@@ -1028,56 +661,12 @@
         let currentEmotion = null;
         let lightMoved = false;
         let matchedShapes = 0;
+        let pianoCompleted = false;
+        let lightCompleted = false;
 
-        // ========== SCROLL NAVIGATION ==========
-        function scrollToNext() {
-            document.getElementById('section2').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function scrollToTop() {
-            // Reset all progress
-            notesPlayed = 0;
-            currentEmotion = null;
-            lightMoved = false;
-            matchedShapes = 0;
-
-            // Clear feedback messages
-            document.getElementById('pianoFeedback').innerHTML = '';
-            document.getElementById('lightFeedback').innerHTML = '';
-            document.getElementById('matchingFeedback').innerHTML = '';
-
-            // Reset emotion buttons
-            document.querySelectorAll('.emotion-button').forEach(btn => {
-                btn.classList.remove('selected');
-            });
-
-            // Reset matching game
-            document.querySelectorAll('.outline').forEach(outline => {
-                outline.classList.remove('matched');
-            });
-            document.querySelectorAll('.led-light').forEach(led => {
-                led.classList.remove('on');
-            });
-
-            // Reset shapes positions
-            const shapesContainer = document.getElementById('shapesContainer');
-            shapesContainer.innerHTML = `
-                <div class="shape shape-circle" draggable="true" data-shape="circle">😊</div>
-                <div class="shape shape-triangle" draggable="true" data-shape="triangle">🌟</div>
-                <div class="shape shape-square" draggable="true" data-shape="square">❤️</div>
-            `;
-            setupMatchingGame();
-
-            // Reset light slider
-            document.getElementById('lightSlider').value = 50;
-            adjustLight(50);
-
-            // Reset scenario panels
-            document.getElementById('panel1').classList.remove('highlight');
-            document.getElementById('panel2').classList.remove('highlight');
-
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        // ========== NAVIGATION ==========
+        function goToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
         }
 
         // ========== PIANO ==========
@@ -1146,12 +735,17 @@
                 btn.classList.remove('selected');
             });
             event.target.classList.add('selected');
+            checkPianoProgress();
         }
 
         function checkPianoProgress() {
             const feedback = document.getElementById('pianoFeedback');
-            if (notesPlayed >= 3 && currentEmotion) {
-                feedback.innerHTML = '<div class="feedback-message">Great music! You\'re doing a wonderful job.</div>';
+            if (notesPlayed >= 3 && currentEmotion && !pianoCompleted) {
+                pianoCompleted = true;
+                feedback.innerHTML = '<div class="feedback-message">Great music! You\'re doing a wonderful job. Moving to next chapter...</div>';
+                setTimeout(() => {
+                    goToSection('section3');
+                }, 2000);
             } else if (notesPlayed >= 1 && !currentEmotion) {
                 feedback.innerHTML = '<div style="text-align: center; color: #7986cb; margin-top: 20px; font-size: 1.1em;">Choose an emotion and play a note.</div>';
             }
@@ -1159,7 +753,6 @@
 
         // ========== LIGHT SCENE ==========
         function adjustLight(value) {
-            lightMoved = true;
             const scene = document.getElementById('bedroomScene');
             const bulb = document.getElementById('lampBulb');
             const label = document.getElementById('lightLabel');
@@ -1186,10 +779,14 @@
                 label.textContent = 'Very bright ☀️';
             }
 
-            // Show feedback
-            if (lightMoved) {
+            // Show feedback and auto-navigate
+            if (!lightMoved) {
+                lightMoved = true;
                 const feedback = document.getElementById('lightFeedback');
-                feedback.innerHTML = '<div class="feedback-message">Nice job exploring! You understand how light can change a room.</div>';
+                feedback.innerHTML = '<div class="feedback-message">Nice job exploring! You understand how light can change a room. Moving to next chapter...</div>';
+                setTimeout(() => {
+                    goToSection('section4');
+                }, 2000);
             }
         }
 
@@ -1264,40 +861,64 @@
         function checkMatchingProgress() {
             if (matchedShapes === 3) {
                 const feedback = document.getElementById('matchingFeedback');
-                feedback.innerHTML = '<div class="feedback-message">Amazing! You turned on all the lights! 🎉</div>';
+                feedback.innerHTML = `
+                    <div class="completion-message">
+                        <h3>🎉 Amazing! You Completed All Chapters! 🎉</h3>
+                        <p>You turned on all the lights!</p>
+                        <p>You've finished the Bright Path interactive book!</p>
+                        <button class="button" onclick="restartBook()" style="margin-top: 20px;">Play Again</button>
+                    </div>
+                `;
             }
         }
 
-        // ========== SCENARIO ==========
-        function selectScenario(scenario) {
-            const panel1 = document.getElementById('panel1');
-            const panel2 = document.getElementById('panel2');
+        function restartBook() {
+            // Reset all progress
+            notesPlayed = 0;
+            currentEmotion = null;
+            lightMoved = false;
+            matchedShapes = 0;
+            pianoCompleted = false;
+            lightCompleted = false;
 
-            // Remove highlights
-            panel1.classList.remove('highlight');
-            panel2.classList.remove('highlight');
+            // Clear feedback messages
+            document.getElementById('pianoFeedback').innerHTML = '';
+            document.getElementById('lightFeedback').innerHTML = '';
+            document.getElementById('matchingFeedback').innerHTML = '';
 
-            if (scenario === 'upset') {
-                panel1.classList.add('highlight');
-                setTimeout(() => {
-                    alert('It\'s okay to feel this way. Talking about feelings helps! 💙');
-                }, 300);
-            } else if (scenario === 'better') {
-                panel2.classList.add('highlight');
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.style.position = 'fixed';
-                    heart.style.top = '50%';
-                    heart.style.left = '50%';
-                    heart.style.transform = 'translate(-50%, -50%)';
-                    heart.style.fontSize = '6em';
-                    heart.style.animation = 'pulse 1s ease-in-out';
-                    heart.style.zIndex = '9999';
-                    heart.textContent = '❤️';
-                    document.body.appendChild(heart);
-                    setTimeout(() => heart.remove(), 1000);
-                }, 300);
-            }
+            // Reset emotion buttons
+            document.querySelectorAll('.emotion-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            // Reset matching game
+            document.querySelectorAll('.outline').forEach(outline => {
+                outline.classList.remove('matched');
+            });
+            document.querySelectorAll('.led-light').forEach(led => {
+                led.classList.remove('on');
+            });
+
+            // Reset shapes positions
+            const shapesContainer = document.getElementById('shapesContainer');
+            shapesContainer.innerHTML = `
+                <div class="shape shape-circle" draggable="true" data-shape="circle">😊</div>
+                <div class="shape shape-triangle" draggable="true" data-shape="triangle">🌟</div>
+                <div class="shape shape-square" draggable="true" data-shape="square">❤️</div>
+            `;
+            setupMatchingGame();
+
+            // Reset light slider
+            document.getElementById('lightSlider').value = 50;
+            const scene = document.getElementById('bedroomScene');
+            scene.style.background = 'rgb(225, 240, 250)';
+            const bulb = document.getElementById('lampBulb');
+            bulb.style.boxShadow = '0 0 40px rgba(255, 235, 59, 0.5)';
+            bulb.style.filter = 'brightness(1.5)';
+            document.getElementById('lightLabel').textContent = 'Comfortable ✨';
+
+            // Scroll to top
+            goToSection('section1');
         }
 
         // ========== INITIALIZE ==========
