@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bright Path - Interactive Light & Music Therapy Book</title>
+    <style>
+        /* ========== GLOBAL STYLES ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #fff9c4 50%, #e1f5fe 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #4a4a4a;
+        }
+
+        /* ========== HEADER ========== */
+        .book-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .book-header h1 {
+            font-size: 2.5em;
+            color: #ff6b9d;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 5px;
+        }
+
+        .book-header .subtitle {
+            font-size: 0.95em;
+            color: #7986cb;
+            font-style: italic;
+        }
+
+        /* ========== PAGE CONTAINER ========== */
+        .page-container {
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            max-width: 900px;
+            width: 100%;
+            min-height: 500px;
+            padding: 40px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== NAVIGATION ========== */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 900px;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, #ffb6c1 0%, #ffd1dc 100%);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1em;
+            color: #4a4a4a;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
+            font-weight: 600;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 182, 193, 0.5);
+        }
+
+        .nav-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress {
+            font-size: 1.1em;
+            color: #7986cb;
+            font-weight: 600;
+        }
+
+        /* ========== COMMON PAGE ELEMENTS ========== */
+        .page-title {
+            font-size: 2em;
+            color: #ff6b9d;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .page-instruction {
+            font-size: 1.1em;
+            color: #7986cb;
+            margin-bottom: 30px;
+            text-align: center;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            color: #4a4a4a;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(161, 196, 253, 0.3);
+            font-weight: 600;
+            min-width: 150px;
+            min-height: 50px;
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(161, 196, 253, 0.5);
+        }
+
+        .feedback-message {
+            text-align: center;
+            font-size: 1.2em;
+            color: #66bb6a;
+            font-weight: 600;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(102, 187, 106, 0.1);
+            border-radius: 15px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        /* ========== PAGE 1 - COVER ========== */
+        #page1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover-star {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #fff9c4 0%, #ffd54f 100%);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            z-index: 0;
+            animation: rotateStar 20s linear infinite;
+        }
+
+        @keyframes rotateStar {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cover-content {
+            z-index: 1;
+            text-align: center;
+        }
+
+        .cover-title {
+            font-size: 3.5em;
+            color: #ff6b9d;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+        }
+
+        .cover-subtitle {
+            font-size: 1.3em;
+            color: #7986cb;
+            margin-bottom: 30px;
+        }
+
+        .cover-dedication {
+            font-size: 1em;
+            color: #4a4a4a;
+            font-style: italic;
+            margin: 30px 0;
+            max-width: 500px;
+        }
+
+        .floating-blob {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .blob1 {
+            width: 80px;
+            height: 80px;
+            background: rgba(161, 196, 253, 0.3);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .blob2 {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 182, 193, 0.3);
+            top: 20%;
+            right: 15%;
+            animation-delay: 1s;
+        }
+
+        .blob3 {
+            width: 100px;
+            height: 100px;
+            background: rgba(186, 104, 200, 0.2);
+            bottom: 15%;
+            left: 20%;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* ========== PAGE 2 - ABOUT ========== */
+        .about-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .about-text {
+            line-height: 1.8;
+        }
+
+        .about-text p {
+            margin-bottom: 15px;
+            color: #4a4a4a;
+        }
+
+        .about-icons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .icon-item {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            transition: transform 0.3s ease;
+        }
+
+        .icon-item:hover {
+            transform: scale(1.1);
+        }
+
+        .icon-music { background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); }
+        .icon-light { background: linear-gradient(135deg, #fab1a0 0%, #ff7675 100%); }
+        .icon-puzzle { background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); }
+
+        .badges {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, #e1bee7 0%, #ce93d8 100%);
+            padding: 12px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+            box-shadow: 0 3px 10px rgba(206, 147, 216, 0.3);
+        }
+
+        .badge:hover {
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* ========== PAGE 3 - PIANO ========== */
+        .piano-container {
+            margin: 30px 0;
+        }
+
+        .piano-keys {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 30px;
+        }
+
+        .piano-key {
+            width: 80px;
+            height: 250px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 20px;
+            font-size: 1.5em;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .piano-key:nth-child(odd) {
+            background: linear-gradient(135deg, #a1c4fd 0%, #7986cb 100%);
+        }
+
+        .piano-key:nth-child(even) {
+            background: linear-gradient(135deg, #e1bee7 0%, #ba68c8 100%);
+        }
+
+        .piano-key:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .piano-key.playing {
+            filter: brightness(1.4);
+            transform: scale(1.05);
+        }
+
+        .music-note {
+            position: absolute;
+            top: -30px;
+            font-size: 2em;
+            animation: floatUp 1s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+
+        .emotion-meter {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .emotion-button {
+            background: white;
+            border: 3px solid #e0e0e0;
+            padding: 12px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .emotion-button:hover {
+            border-color: #ffb6c1;
+        }
+
+        .emotion-button.selected {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-color: #fdcb6e;
+        }
+
+        /* ========== PAGE 4 - BEDROOM LIGHT ========== */
+        .bedroom-scene {
+            position: relative;
+            height: 300px;
+            margin: 30px auto;
+            max-width: 600px;
+            border-radius: 20px;
+            transition: background 0.5s ease;
+            padding: 30px;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.1);
+        }
+
+        .bedroom-wall {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .bed {
+            position: absolute;
+            bottom: 20px;
+            left: 50px;
+            width: 150px;
+            height: 80px;
+            background: linear-gradient(135deg, #ce93d8 0%, #ba68c8 100%);
+            border-radius: 10px;
+        }
+
+        .bed::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            background: #e1bee7;
+            border-radius: 5px;
+        }
+
+        .window {
+            position: absolute;
+            top: 30px;
+            right: 80px;
+            width: 100px;
+            height: 120px;
+            background: linear-gradient(135deg, #81d4fa 0%, #4fc3f7 100%);
+            border-radius: 10px;
+            border: 5px solid #fff;
+        }
+
+        .lamp {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .lamp-cord {
+            width: 3px;
+            height: 40px;
+            background: #9e9e9e;
+            margin: 0 auto;
+        }
+
+        .lamp-bulb {
+            width: 60px;
+            height: 60px;
+            background: #fff9c4;
+            border-radius: 50%;
+            margin: 0 auto;
+            transition: all 0.5s ease;
+            box-shadow: 0 0 0px rgba(255, 235, 59, 0);
+        }
+
+        .light-control {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .light-slider {
+            width: 80%;
+            max-width: 400px;
+            height: 20px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: linear-gradient(to right, #1a237e, #fdd835);
+            outline: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .light-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+
+        .light-slider::-moz-range-thumb {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            border: none;
+        }
+
+        .light-label {
+            font-size: 1.5em;
+            color: #7986cb;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        /* ========== PAGE 5 - MATCHING GAME ========== */
+        .matching-game {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .outlines {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .outline {
+            width: 150px;
+            height: 150px;
+            border: 4px dashed #bdbdbd;
+            border-radius: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .outline.matched {
+            border-style: solid;
+            border-color: #66bb6a;
+            background: rgba(102, 187, 106, 0.1);
+        }
+
+        .led-light {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            transition: all 0.5s ease;
+        }
+
+        .led-light.on {
+            background: #fdd835;
+            box-shadow: 0 0 20px #fdd835, 0 0 40px #fdd835;
+        }
+
+        .shapes {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .shape {
+            width: 130px;
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: move;
+            transition: all 0.3s ease;
+            font-size: 2em;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .shape:hover {
+            transform: scale(1.05);
+        }
+
+        .shape.dragging {
+            opacity: 0.5;
+        }
+
+        .shape.placed {
+            cursor: default;
+        }
+
+        .shape-circle {
+            background: linear-gradient(135deg, #ffb6c1 0%, #ff8fab 100%);
+            border-radius: 50%;
+        }
+
+        .shape-triangle {
+            background: linear-gradient(135deg, #a1c4fd 0%, #7986cb 100%);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        .shape-square {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+        }
+
+        .outline-circle {
+            border-radius: 50%;
+        }
+
+        .outline-triangle {
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+
+        /* ========== PAGE 6 - SCENARIO ========== */
+        .scenario-panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .panel {
+            background: #f5f5f5;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.5s ease;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .panel.highlight {
+            background: linear-gradient(135deg, #fff9c4 0%, #ffeaa7 100%);
+            transform: scale(1.05);
+        }
+
+        .character {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+
+        .character-head {
+            width: 60px;
+            height: 60px;
+            background: #ffccbc;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            position: relative;
+        }
+
+        .character-eyes {
+            position: absolute;
+            top: 20px;
+            left: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .eye {
+            width: 8px;
+            height: 8px;
+            background: #4a4a4a;
+            border-radius: 50%;
+        }
+
+        .character-mouth {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 10px;
+            border-bottom: 3px solid #4a4a4a;
+        }
+
+        .character-mouth.happy {
+            border-bottom: none;
+            border-top: 3px solid #4a4a4a;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .character-body {
+            width: 40px;
+            height: 40px;
+            background: #a1c4fd;
+            margin: 0 auto;
+            border-radius: 10px;
+        }
+
+        .emotion-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .panel-text {
+            font-size: 1.1em;
+            color: #4a4a4a;
+            line-height: 1.6;
+        }
+
+        .scenario-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .parent-note {
+            background: rgba(161, 196, 253, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            font-style: italic;
+            margin-top: 20px;
+            color: #5c6bc0;
+        }
+
+        /* ========== PAGE 7 - ENDING ========== */
+        .ending-content {
+            text-align: center;
+        }
+
+        .ending-illustration {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .parent-child-icon {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .parent-figure {
+            width: 80px;
+            height: 120px;
+            background: linear-gradient(135deg, #7986cb 0%, #5c6bc0 100%);
+            border-radius: 15px 15px 0 0;
+            position: relative;
+        }
+
+        .parent-figure::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: #ffccbc;
+            border-radius: 50%;
+        }
+
+        .child-figure {
+            width: 60px;
+            height: 90px;
+            background: linear-gradient(135deg, #ffb6c1 0%, #ff8fab 100%);
+            border-radius: 15px 15px 0 0;
+            position: relative;
+        }
+
+        .child-figure::before {
+            content: '';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: #ffccbc;
+            border-radius: 50%;
+        }
+
+        .parent-tips {
+            text-align: left;
+            margin: 30px auto;
+            max-width: 600px;
+        }
+
+        .tip-item {
+            background: white;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 15px;
+            border-left: 5px solid #66bb6a;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tip-item:hover {
+            background: #f1f8e9;
+            transform: translateX(5px);
+        }
+
+        .tip-item::before {
+            content: '💡 ';
+            margin-right: 10px;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .about-layout,
+            .matching-game,
+            .scenario-panels {
+                grid-template-columns: 1fr;
+            }
+
+            .piano-keys {
+                flex-wrap: wrap;
+            }
+
+            .piano-key {
+                width: 60px;
+                height: 200px;
+            }
+
+            .cover-title {
+                font-size: 2.5em;
+            }
+
+            .page-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="book-header">
+        <h1>Bright Path</h1>
+        <div class="subtitle">An interactive book of light and music for autistic children</div>
+    </div>
+
+    <!-- Page Container -->
+    <div class="page-container">
+        <!-- Page 1 - Cover -->
+        <div id="page1" class="page active">
+            <div class="cover-star"></div>
+            <div class="floating-blob blob1"></div>
+            <div class="floating-blob blob2"></div>
+            <div class="floating-blob blob3"></div>
+            <div class="cover-content">
+                <h1 class="cover-title">Bright Path</h1>
+                <div class="cover-subtitle">Interactive Light & Music Therapy Book</div>
+                <p class="cover-dedication">
+                    "This book is made for young artists who feel the world in special ways."
+                </p>
+                <button class="button" onclick="nextPage()">Start Reading</button>
+            </div>
+        </div>
+
+        <!-- Page 2 - About -->
+        <div id="page2" class="page">
+            <h2 class="page-title">About Bright Path</h2>
+            <div class="about-layout">
+                <div class="about-text">
+                    <p>Bright Path was inspired by volunteering at a psychiatric hospital and learning about art therapy for autistic children.</p>
+                    <p>This interactive book uses:</p>
+                    <p><strong>🎵 Music</strong> to soothe emotions and express feelings</p>
+                    <p><strong>💡 Light</strong> to practice focus and cause-and-effect</p>
+                    <p><strong>🧩 Games & Stories</strong> to support social skills and confidence</p>
+                </div>
+                <div class="about-icons">
+                    <div class="icon-item icon-music">🎹</div>
+                    <div class="icon-item icon-light">💡</div>
+                    <div class="icon-item icon-puzzle">🧩</div>
+                </div>
+            </div>
+            <div class="badges">
+                <div class="badge">3–6 years old</div>
+                <div class="badge">Sensory-friendly</div>
+                <div class="badge">Play together with family</div>
+            </div>
+        </div>
+
+        <!-- Page 3 - Piano of Feelings -->
+        <div id="page3" class="page">
+            <h2 class="page-title">Chapter 1 – Piano of Feelings</h2>
+            <p class="page-instruction">
+                Touch the keys to hear gentle notes. Ask your child which sound feels happy, calm, or excited.
+            </p>
+            <div class="piano-container">
+                <div class="piano-keys" id="pianoKeys"></div>
+                <div class="emotion-meter">
+                    <button class="emotion-button" data-emotion="calm" onclick="selectEmotion('calm')">😌 Calm</button>
+                    <button class="emotion-button" data-emotion="happy" onclick="selectEmotion('happy')">😊 Happy</button>
+                    <button class="emotion-button" data-emotion="excited" onclick="selectEmotion('excited')">🤩 Excited</button>
+                </div>
+                <div id="pianoFeedback"></div>
+            </div>
+        </div>
+
+        <!-- Page 4 - Bedroom of Light -->
+        <div id="page4" class="page">
+            <h2 class="page-title">Chapter 2 – Bedroom of Light</h2>
+            <p class="page-instruction">
+                Turn the slider to change the bedroom light. Talk about bright and dark.
+            </p>
+            <div class="bedroom-scene" id="bedroomScene">
+                <div class="bedroom-wall">
+                    <div class="lamp">
+                        <div class="lamp-cord"></div>
+                        <div class="lamp-bulb" id="lampBulb"></div>
+                    </div>
+                    <div class="window"></div>
+                    <div class="bed"></div>
+                </div>
+            </div>
+            <div class="light-control">
+                <input type="range" min="0" max="100" value="50" class="light-slider" id="lightSlider"
+                       oninput="adjustLight(this.value)" aria-label="Brightness slider">
+                <div class="light-label" id="lightLabel">Comfortable</div>
+            </div>
+            <div id="lightFeedback"></div>
+        </div>
+
+        <!-- Page 5 - Match the Shapes -->
+        <div id="page5" class="page">
+            <h2 class="page-title">Chapter 3 – Match the Shapes</h2>
+            <p class="page-instruction">
+                Find the right shape and place it in the matching outline to turn on the light.
+            </p>
+            <div class="matching-game">
+                <div class="outlines">
+                    <div class="outline outline-circle" data-shape="circle">
+                        <div class="led-light" id="led-circle"></div>
+                    </div>
+                    <div class="outline outline-triangle" data-shape="triangle">
+                        <div class="led-light" id="led-triangle"></div>
+                    </div>
+                    <div class="outline outline-square" data-shape="square">
+                        <div class="led-light" id="led-square"></div>
+                    </div>
+                </div>
+                <div class="shapes" id="shapesContainer">
+                    <div class="shape shape-circle" draggable="true" data-shape="circle">😊</div>
+                    <div class="shape shape-triangle" draggable="true" data-shape="triangle">🌟</div>
+                    <div class="shape shape-square" draggable="true" data-shape="square">❤️</div>
+                </div>
+            </div>
+            <div id="matchingFeedback"></div>
+        </div>
+
+        <!-- Page 6 - Scenario Story -->
+        <div id="page6" class="page">
+            <h2 class="page-title">Scenario – Sharing Feelings</h2>
+            <p class="page-instruction">
+                One day, a child feels nervous at school. They learn to share their feelings.
+            </p>
+            <div class="scenario-panels">
+                <div class="panel" id="panel1">
+                    <div class="emotion-icon">☁️</div>
+                    <div class="character">
+                        <div class="character-head">
+                            <div class="character-eyes">
+                                <div class="eye"></div>
+                                <div class="eye"></div>
+                            </div>
+                            <div class="character-mouth"></div>
+                        </div>
+                        <div class="character-body"></div>
+                    </div>
+                    <div class="panel-text">
+                        "I feel scared and upset."
+                    </div>
+                </div>
+                <div class="panel" id="panel2">
+                    <div class="emotion-icon">💡</div>
+                    <div class="character">
+                        <div class="character-head">
+                            <div class="character-eyes">
+                                <div class="eye"></div>
+                                <div class="eye"></div>
+                            </div>
+                            <div class="character-mouth happy"></div>
+                        </div>
+                        <div class="character-body"></div>
+                    </div>
+                    <div class="panel-text">
+                        "I talked about it. I feel better now!"
+                    </div>
+                </div>
+            </div>
+            <div class="scenario-buttons">
+                <button class="button" onclick="selectScenario('upset')">I feel upset</button>
+                <button class="button" onclick="selectScenario('better')">I feel better now</button>
+            </div>
+            <div class="parent-note">
+                Parents: Read the speech bubbles and ask your child how they feel today.
+            </div>
+        </div>
+
+        <!-- Page 7 - Ending -->
+        <div id="page7" class="page">
+            <div class="ending-content">
+                <h2 class="page-title">Thank You for Reading Bright Path</h2>
+                <div class="ending-illustration">
+                    <div class="parent-child-icon">
+                        <div class="parent-figure"></div>
+                        <div class="child-figure"></div>
+                    </div>
+                </div>
+                <div class="parent-tips">
+                    <h3 style="text-align: center; color: #7986cb; margin-bottom: 20px;">Tips for Parents</h3>
+                    <div class="tip-item">
+                        Use the piano page to talk about feelings connected to sounds.
+                    </div>
+                    <div class="tip-item">
+                        Use the light page to practice focus and cause-and-effect.
+                    </div>
+                    <div class="tip-item">
+                        Use the matching and story pages to practice turn-taking and simple social situations.
+                    </div>
+                </div>
+                <button class="button" onclick="restartBook()">Restart the Book</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button class="nav-button" id="prevBtn" onclick="prevPage()">◀ Previous</button>
+        <div class="progress">
+            <span id="currentPage">1</span> / <span id="totalPages">7</span>
+        </div>
+        <button class="nav-button" id="nextBtn" onclick="nextPage()">Next ▶</button>
+    </div>
+
+    <script>
+        // ========== GLOBAL STATE ==========
+        let currentPageNum = 1;
+        const totalPages = 7;
+        let audioContext;
+        let notesPlayed = 0;
+        let currentEmotion = null;
+        let lightMoved = false;
+        let matchedShapes = 0;
+
+        // ========== NAVIGATION ==========
+        function showPage(pageNum) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show current page
+            document.getElementById('page' + pageNum).classList.add('active');
+
+            // Update progress
+            document.getElementById('currentPage').textContent = pageNum;
+
+            // Update buttons
+            document.getElementById('prevBtn').disabled = (pageNum === 1);
+            document.getElementById('nextBtn').disabled = (pageNum === totalPages);
+
+            currentPageNum = pageNum;
+
+            // Initialize page-specific features
+            if (pageNum === 3 && document.getElementById('pianoKeys').children.length === 0) {
+                setupPiano();
+            }
+        }
+
+        function nextPage() {
+            if (currentPageNum < totalPages) {
+                showPage(currentPageNum + 1);
+            }
+        }
+
+        function prevPage() {
+            if (currentPageNum > 1) {
+                showPage(currentPageNum - 1);
+            }
+        }
+
+        function restartBook() {
+            // Reset all progress
+            notesPlayed = 0;
+            currentEmotion = null;
+            lightMoved = false;
+            matchedShapes = 0;
+
+            // Clear feedback messages
+            document.getElementById('pianoFeedback').innerHTML = '';
+            document.getElementById('lightFeedback').innerHTML = '';
+            document.getElementById('matchingFeedback').innerHTML = '';
+
+            // Reset emotion buttons
+            document.querySelectorAll('.emotion-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            // Reset matching game
+            document.querySelectorAll('.outline').forEach(outline => {
+                outline.classList.remove('matched');
+            });
+            document.querySelectorAll('.led-light').forEach(led => {
+                led.classList.remove('on');
+            });
+
+            // Reset shapes positions
+            const shapesContainer = document.getElementById('shapesContainer');
+            shapesContainer.innerHTML = `
+                <div class="shape shape-circle" draggable="true" data-shape="circle">😊</div>
+                <div class="shape shape-triangle" draggable="true" data-shape="triangle">🌟</div>
+                <div class="shape shape-square" draggable="true" data-shape="square">❤️</div>
+            `;
+            setupMatchingGame();
+
+            // Reset light slider
+            document.getElementById('lightSlider').value = 50;
+            adjustLight(50);
+
+            // Go to first page
+            showPage(1);
+        }
+
+        // ========== PAGE 3 - PIANO ==========
+        function setupPiano() {
+            const pianoKeys = document.getElementById('pianoKeys');
+            const frequencies = [262, 294, 330, 349, 392, 440, 494, 523]; // C4 to C5
+            const noteNames = ['C', 'D', 'E', 'F', 'G', 'A', 'B', 'C'];
+
+            frequencies.forEach((freq, index) => {
+                const key = document.createElement('div');
+                key.className = 'piano-key';
+                key.textContent = noteNames[index];
+                key.setAttribute('tabindex', '0');
+                key.setAttribute('aria-label', `Piano key ${noteNames[index]}`);
+                key.onclick = () => playNote(freq, key);
+                key.onkeydown = (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        playNote(freq, key);
+                    }
+                };
+                pianoKeys.appendChild(key);
+            });
+        }
+
+        function playNote(frequency, keyElement) {
+            // Visual feedback
+            keyElement.classList.add('playing');
+            setTimeout(() => keyElement.classList.remove('playing'), 300);
+
+            // Show music note
+            const note = document.createElement('div');
+            note.className = 'music-note';
+            note.textContent = '♪';
+            keyElement.appendChild(note);
+            setTimeout(() => note.remove(), 1000);
+
+            // Play sound using Web Audio API
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+
+            // Track progress
+            notesPlayed++;
+            checkPianoProgress();
+        }
+
+        function selectEmotion(emotion) {
+            currentEmotion = emotion;
+            document.querySelectorAll('.emotion-button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+        }
+
+        function checkPianoProgress() {
+            const feedback = document.getElementById('pianoFeedback');
+            if (notesPlayed >= 3 && currentEmotion) {
+                feedback.innerHTML = '<div class="feedback-message">Great music! You\'re doing a wonderful job.</div>';
+            } else if (notesPlayed >= 1 && !currentEmotion) {
+                feedback.innerHTML = '<div style="text-align: center; color: #7986cb; margin-top: 15px;">Choose an emotion and play a note.</div>';
+            }
+        }
+
+        // ========== PAGE 4 - LIGHT SCENE ==========
+        function adjustLight(value) {
+            lightMoved = true;
+            const scene = document.getElementById('bedroomScene');
+            const bulb = document.getElementById('lampBulb');
+            const label = document.getElementById('lightLabel');
+
+            // Adjust background color
+            const darkness = 100 - value;
+            const r = Math.round(225 - (darkness * 0.5));
+            const g = Math.round(240 - (darkness * 0.6));
+            const b = Math.round(250 - (darkness * 0.8));
+            scene.style.background = `rgb(${r}, ${g}, ${b})`;
+
+            // Adjust bulb glow
+            const glowSize = value * 0.8;
+            const glowOpacity = value / 100;
+            bulb.style.boxShadow = `0 0 ${glowSize}px rgba(255, 235, 59, ${glowOpacity})`;
+            bulb.style.filter = `brightness(${1 + value / 100})`;
+
+            // Update label
+            if (value <= 30) {
+                label.textContent = 'Cozy dark 🌙';
+            } else if (value <= 70) {
+                label.textContent = 'Comfortable ✨';
+            } else {
+                label.textContent = 'Very bright ☀️';
+            }
+
+            // Show feedback
+            if (lightMoved) {
+                const feedback = document.getElementById('lightFeedback');
+                feedback.innerHTML = '<div class="feedback-message">Nice job exploring! You understand how light can change a room.</div>';
+            }
+        }
+
+        // ========== PAGE 5 - MATCHING GAME ==========
+        function setupMatchingGame() {
+            const shapes = document.querySelectorAll('.shape');
+            const outlines = document.querySelectorAll('.outline');
+            let draggedElement = null;
+
+            shapes.forEach(shape => {
+                shape.addEventListener('dragstart', (e) => {
+                    if (!shape.classList.contains('placed')) {
+                        draggedElement = shape;
+                        shape.classList.add('dragging');
+                    } else {
+                        e.preventDefault();
+                    }
+                });
+
+                shape.addEventListener('dragend', () => {
+                    shape.classList.remove('dragging');
+                });
+            });
+
+            outlines.forEach(outline => {
+                outline.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                });
+
+                outline.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    if (draggedElement && !outline.classList.contains('matched')) {
+                        const shapeType = draggedElement.getAttribute('data-shape');
+                        const outlineType = outline.getAttribute('data-shape');
+
+                        if (shapeType === outlineType) {
+                            // Correct match!
+                            outline.classList.add('matched');
+                            draggedElement.classList.add('placed');
+
+                            // Move shape into outline
+                            const outlineRect = outline.getBoundingClientRect();
+                            const shapeRect = draggedElement.getBoundingClientRect();
+                            draggedElement.style.position = 'absolute';
+                            draggedElement.style.left = outlineRect.left - shapeRect.left + 10 + 'px';
+                            draggedElement.style.top = outlineRect.top - shapeRect.top + 10 + 'px';
+
+                            // Turn on LED
+                            document.getElementById('led-' + shapeType).classList.add('on');
+
+                            matchedShapes++;
+                            checkMatchingProgress();
+                        } else {
+                            // Wrong match - bounce back
+                            draggedElement.style.animation = 'none';
+                            setTimeout(() => {
+                                draggedElement.style.animation = '';
+                            }, 10);
+
+                            const feedback = document.getElementById('matchingFeedback');
+                            feedback.innerHTML = '<div style="text-align: center; color: #ff9800; margin-top: 15px;">Try another spot! 🤔</div>';
+                            setTimeout(() => {
+                                feedback.innerHTML = '';
+                            }, 2000);
+                        }
+                    }
+                    draggedElement = null;
+                });
+            });
+        }
+
+        function checkMatchingProgress() {
+            if (matchedShapes === 3) {
+                const feedback = document.getElementById('matchingFeedback');
+                feedback.innerHTML = '<div class="feedback-message">Amazing! You turned on all the lights! 🎉</div>';
+            }
+        }
+
+        // ========== PAGE 6 - SCENARIO ==========
+        function selectScenario(scenario) {
+            const panel1 = document.getElementById('panel1');
+            const panel2 = document.getElementById('panel2');
+
+            // Remove highlights
+            panel1.classList.remove('highlight');
+            panel2.classList.remove('highlight');
+
+            if (scenario === 'upset') {
+                panel1.classList.add('highlight');
+                setTimeout(() => {
+                    alert('It\'s okay to feel this way. Talking about feelings helps! 💙');
+                }, 300);
+            } else if (scenario === 'better') {
+                panel2.classList.add('highlight');
+                document.body.style.background = 'linear-gradient(135deg, #ffe8f0 0%, #fff9c4 50%, #e1f5fe 100%)';
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.style.position = 'fixed';
+                    heart.style.top = '50%';
+                    heart.style.left = '50%';
+                    heart.style.transform = 'translate(-50%, -50%)';
+                    heart.style.fontSize = '5em';
+                    heart.style.animation = 'pulse 1s ease-in-out';
+                    heart.textContent = '❤️';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 1000);
+                }, 300);
+            }
+        }
+
+        // ========== INITIALIZE ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage(1);
+            setupMatchingGame();
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight') {
+                    nextPage();
+                } else if (e.key === 'ArrowLeft') {
+                    prevPage();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
