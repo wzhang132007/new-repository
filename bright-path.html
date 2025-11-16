@@ -12,115 +12,82 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background: linear-gradient(135deg, #e8f5e9 0%, #fff9c4 50%, #e1f5fe 100%);
+            color: #4a4a4a;
+            overflow-x: hidden;
+        }
+
+        /* ========== SECTION STYLES ========== */
+        .section {
             min-height: 100vh;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
-            color: #4a4a4a;
-        }
-
-        /* ========== HEADER ========== */
-        .book-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .book-header h1 {
-            font-size: 2.5em;
-            color: #ff6b9d;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 5px;
-        }
-
-        .book-header .subtitle {
-            font-size: 0.95em;
-            color: #7986cb;
-            font-style: italic;
-        }
-
-        /* ========== PAGE CONTAINER ========== */
-        .page-container {
-            background: white;
-            border-radius: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            max-width: 900px;
-            width: 100%;
-            min-height: 500px;
-            padding: 40px;
+            justify-content: center;
+            padding: 60px 40px;
             position: relative;
-            margin-bottom: 20px;
+            scroll-snap-align: start;
         }
 
-        .page {
-            display: none;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        .page.active {
-            display: block;
+        .section-content {
+            max-width: 1000px;
+            width: 100%;
+            animation: fadeIn 0.8s ease-in;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ========== NAVIGATION ========== */
-        .navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 900px;
-            width: 100%;
-            gap: 20px;
+        /* ========== SECTION BACKGROUNDS ========== */
+        #section1 {
+            background: linear-gradient(135deg, #e8f5e9 0%, #fff9c4 50%, #e1f5fe 100%);
         }
 
-        .nav-button {
-            background: linear-gradient(135deg, #ffb6c1 0%, #ffd1dc 100%);
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-size: 1em;
-            color: #4a4a4a;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
-            font-weight: 600;
+        #section2 {
+            background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
         }
 
-        .nav-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 182, 193, 0.5);
+        #section3 {
+            background: linear-gradient(135deg, #e1f5fe 0%, #e8eaf6 100%);
         }
 
-        .nav-button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            transform: none;
+        #section4 {
+            background: linear-gradient(135deg, #fff9c4 0%, #ffe0b2 100%);
         }
 
-        .progress {
-            font-size: 1.1em;
-            color: #7986cb;
-            font-weight: 600;
+        #section5 {
+            background: linear-gradient(135deg, #f1f8e9 0%, #dcedc8 100%);
         }
 
-        /* ========== COMMON PAGE ELEMENTS ========== */
-        .page-title {
-            font-size: 2em;
+        #section6 {
+            background: linear-gradient(135deg, #fce4ec 0%, #ffebee 100%);
+        }
+
+        #section7 {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        }
+
+        /* ========== COMMON ELEMENTS ========== */
+        .section-title {
+            font-size: 2.5em;
             color: #ff6b9d;
             margin-bottom: 20px;
             text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
-        .page-instruction {
-            font-size: 1.1em;
+        .section-instruction {
+            font-size: 1.2em;
             color: #7986cb;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             text-align: center;
             font-style: italic;
             line-height: 1.6;
@@ -129,85 +96,80 @@
         .button {
             background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
             border: none;
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-size: 1.1em;
+            padding: 18px 36px;
+            border-radius: 30px;
+            font-size: 1.2em;
             color: #4a4a4a;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(161, 196, 253, 0.3);
+            box-shadow: 0 6px 20px rgba(161, 196, 253, 0.4);
             font-weight: 600;
-            min-width: 150px;
-            min-height: 50px;
+            min-width: 180px;
+            min-height: 60px;
         }
 
         .button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(161, 196, 253, 0.5);
+            transform: scale(1.08);
+            box-shadow: 0 8px 25px rgba(161, 196, 253, 0.6);
         }
 
         .feedback-message {
             text-align: center;
-            font-size: 1.2em;
+            font-size: 1.3em;
             color: #66bb6a;
             font-weight: 600;
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(102, 187, 106, 0.1);
-            border-radius: 15px;
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(102, 187, 106, 0.15);
+            border-radius: 20px;
             animation: fadeIn 0.5s ease-in;
         }
 
-        /* ========== PAGE 1 - COVER ========== */
-        #page1 {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 500px;
+        /* ========== SECTION 1 - COVER ========== */
+        .cover-container {
             position: relative;
-            overflow: hidden;
+            text-align: center;
+            z-index: 1;
         }
 
         .cover-star {
             position: absolute;
-            width: 300px;
-            height: 300px;
+            width: 350px;
+            height: 350px;
             background: radial-gradient(circle, #fff9c4 0%, #ffd54f 100%);
             clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            z-index: 0;
+            z-index: -1;
             animation: rotateStar 20s linear infinite;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
         }
 
         @keyframes rotateStar {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .cover-content {
-            z-index: 1;
-            text-align: center;
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
         .cover-title {
-            font-size: 3.5em;
+            font-size: 4.5em;
             color: #ff6b9d;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
-            margin-bottom: 10px;
+            text-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
         }
 
         .cover-subtitle {
-            font-size: 1.3em;
+            font-size: 1.5em;
             color: #7986cb;
             margin-bottom: 30px;
         }
 
         .cover-dedication {
-            font-size: 1em;
+            font-size: 1.1em;
             color: #4a4a4a;
             font-style: italic;
-            margin: 30px 0;
-            max-width: 500px;
+            margin: 40px auto;
+            max-width: 600px;
+            line-height: 1.8;
         }
 
         .floating-blob {
@@ -217,74 +179,77 @@
         }
 
         .blob1 {
-            width: 80px;
-            height: 80px;
-            background: rgba(161, 196, 253, 0.3);
-            top: 10%;
+            width: 100px;
+            height: 100px;
+            background: rgba(161, 196, 253, 0.4);
+            top: 15%;
             left: 10%;
             animation-delay: 0s;
         }
 
         .blob2 {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 182, 193, 0.3);
-            top: 20%;
-            right: 15%;
-            animation-delay: 1s;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 182, 193, 0.4);
+            top: 25%;
+            right: 12%;
+            animation-delay: 1.5s;
         }
 
         .blob3 {
-            width: 100px;
-            height: 100px;
-            background: rgba(186, 104, 200, 0.2);
-            bottom: 15%;
-            left: 20%;
-            animation-delay: 2s;
+            width: 120px;
+            height: 120px;
+            background: rgba(186, 104, 200, 0.3);
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 3s;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-25px); }
         }
 
-        /* ========== PAGE 2 - ABOUT ========== */
+        /* ========== SECTION 2 - ABOUT ========== */
         .about-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            gap: 40px;
             align-items: center;
+            margin: 30px 0;
         }
 
         .about-text {
-            line-height: 1.8;
+            line-height: 2;
+            font-size: 1.1em;
         }
 
         .about-text p {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             color: #4a4a4a;
         }
 
         .about-icons {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
             align-items: center;
         }
 
         .icon-item {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3em;
+            font-size: 3.5em;
             transition: transform 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
         }
 
         .icon-item:hover {
-            transform: scale(1.1);
+            transform: scale(1.15) rotate(5deg);
         }
 
         .icon-music { background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%); }
@@ -293,58 +258,58 @@
 
         .badges {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
-            margin-top: 30px;
+            margin-top: 40px;
             flex-wrap: wrap;
         }
 
         .badge {
             background: linear-gradient(135deg, #e1bee7 0%, #ce93d8 100%);
-            padding: 12px 20px;
-            border-radius: 20px;
-            font-size: 0.9em;
+            padding: 15px 28px;
+            border-radius: 25px;
+            font-size: 1em;
             font-weight: 600;
             transition: transform 0.3s ease;
-            box-shadow: 0 3px 10px rgba(206, 147, 216, 0.3);
+            box-shadow: 0 4px 15px rgba(206, 147, 216, 0.4);
         }
 
         .badge:hover {
-            animation: pulse 0.5s ease-in-out;
+            animation: pulse 0.6s ease-in-out;
         }
 
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.12); }
         }
 
-        /* ========== PAGE 3 - PIANO ========== */
+        /* ========== SECTION 3 - PIANO ========== */
         .piano-container {
-            margin: 30px 0;
+            margin: 40px 0;
         }
 
         .piano-keys {
             display: flex;
             justify-content: center;
-            gap: 5px;
-            margin-bottom: 30px;
+            gap: 8px;
+            margin-bottom: 40px;
         }
 
         .piano-key {
-            width: 80px;
-            height: 250px;
-            border-radius: 10px;
+            width: 90px;
+            height: 280px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            padding-bottom: 20px;
-            font-size: 1.5em;
+            padding-bottom: 25px;
+            font-size: 1.6em;
             color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             position: relative;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
         }
 
         .piano-key:nth-child(odd) {
@@ -356,20 +321,20 @@
         }
 
         .piano-key:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
         }
 
         .piano-key.playing {
-            filter: brightness(1.4);
-            transform: scale(1.05);
+            filter: brightness(1.5);
+            transform: scale(1.08);
         }
 
         .music-note {
             position: absolute;
-            top: -30px;
-            font-size: 2em;
-            animation: floatUp 1s ease-out forwards;
+            top: -40px;
+            font-size: 2.2em;
+            animation: floatUp 1.2s ease-out forwards;
             pointer-events: none;
         }
 
@@ -380,30 +345,31 @@
             }
             to {
                 opacity: 0;
-                transform: translateY(-50px);
+                transform: translateY(-60px);
             }
         }
 
         .emotion-meter {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
-            margin: 20px 0;
+            margin: 25px 0;
         }
 
         .emotion-button {
             background: white;
-            border: 3px solid #e0e0e0;
-            padding: 12px 24px;
-            border-radius: 20px;
+            border: 4px solid #e0e0e0;
+            padding: 15px 30px;
+            border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 1em;
+            font-size: 1.1em;
             font-weight: 600;
         }
 
         .emotion-button:hover {
             border-color: #ffb6c1;
+            transform: scale(1.05);
         }
 
         .emotion-button.selected {
@@ -411,16 +377,16 @@
             border-color: #fdcb6e;
         }
 
-        /* ========== PAGE 4 - BEDROOM LIGHT ========== */
+        /* ========== SECTION 4 - BEDROOM LIGHT ========== */
         .bedroom-scene {
             position: relative;
-            height: 300px;
-            margin: 30px auto;
-            max-width: 600px;
-            border-radius: 20px;
+            height: 350px;
+            margin: 40px auto;
+            max-width: 700px;
+            border-radius: 25px;
             transition: background 0.5s ease;
-            padding: 30px;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.1);
+            padding: 40px;
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.12);
         }
 
         .bedroom-wall {
@@ -431,53 +397,53 @@
 
         .bed {
             position: absolute;
-            bottom: 20px;
-            left: 50px;
-            width: 150px;
-            height: 80px;
+            bottom: 25px;
+            left: 60px;
+            width: 180px;
+            height: 95px;
             background: linear-gradient(135deg, #ce93d8 0%, #ba68c8 100%);
-            border-radius: 10px;
+            border-radius: 12px;
         }
 
         .bed::after {
             content: '';
             position: absolute;
-            top: -20px;
-            left: 10px;
-            width: 40px;
-            height: 40px;
+            top: -25px;
+            left: 15px;
+            width: 50px;
+            height: 50px;
             background: #e1bee7;
-            border-radius: 5px;
+            border-radius: 8px;
         }
 
         .window {
             position: absolute;
-            top: 30px;
-            right: 80px;
-            width: 100px;
-            height: 120px;
+            top: 35px;
+            right: 90px;
+            width: 120px;
+            height: 140px;
             background: linear-gradient(135deg, #81d4fa 0%, #4fc3f7 100%);
-            border-radius: 10px;
-            border: 5px solid #fff;
+            border-radius: 12px;
+            border: 6px solid #fff;
         }
 
         .lamp {
             position: absolute;
-            top: 20px;
+            top: 25px;
             left: 50%;
             transform: translateX(-50%);
         }
 
         .lamp-cord {
-            width: 3px;
-            height: 40px;
+            width: 4px;
+            height: 50px;
             background: #9e9e9e;
             margin: 0 auto;
         }
 
         .lamp-bulb {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             background: #fff9c4;
             border-radius: 50%;
             margin: 0 auto;
@@ -486,70 +452,70 @@
         }
 
         .light-control {
-            margin: 30px 0;
+            margin: 40px 0;
             text-align: center;
         }
 
         .light-slider {
-            width: 80%;
-            max-width: 400px;
-            height: 20px;
+            width: 85%;
+            max-width: 500px;
+            height: 24px;
             -webkit-appearance: none;
             appearance: none;
             background: linear-gradient(to right, #1a237e, #fdd835);
             outline: none;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
         }
 
         .light-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             background: white;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .light-slider::-moz-range-thumb {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             background: white;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             border: none;
         }
 
         .light-label {
-            font-size: 1.5em;
+            font-size: 1.8em;
             color: #7986cb;
             font-weight: 600;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
-        /* ========== PAGE 5 - MATCHING GAME ========== */
+        /* ========== SECTION 5 - MATCHING GAME ========== */
         .matching-game {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin: 30px 0;
+            gap: 60px;
+            margin: 40px 0;
         }
 
         .outlines {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 40px;
             align-items: center;
         }
 
         .outline {
-            width: 150px;
-            height: 150px;
-            border: 4px dashed #bdbdbd;
-            border-radius: 15px;
+            width: 170px;
+            height: 170px;
+            border: 5px dashed #bdbdbd;
+            border-radius: 18px;
             position: relative;
             transition: all 0.3s ease;
         }
@@ -557,16 +523,16 @@
         .outline.matched {
             border-style: solid;
             border-color: #66bb6a;
-            background: rgba(102, 187, 106, 0.1);
+            background: rgba(102, 187, 106, 0.15);
         }
 
         .led-light {
             position: absolute;
-            top: -40px;
+            top: -50px;
             left: 50%;
             transform: translateX(-50%);
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             background: #e0e0e0;
             transition: all 0.5s ease;
@@ -574,31 +540,31 @@
 
         .led-light.on {
             background: #fdd835;
-            box-shadow: 0 0 20px #fdd835, 0 0 40px #fdd835;
+            box-shadow: 0 0 25px #fdd835, 0 0 50px #fdd835;
         }
 
         .shapes {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 40px;
             align-items: center;
         }
 
         .shape {
-            width: 130px;
-            height: 130px;
+            width: 150px;
+            height: 150px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: move;
             transition: all 0.3s ease;
-            font-size: 2em;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-size: 2.5em;
+            border-radius: 18px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
         }
 
         .shape:hover {
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         .shape.dragging {
@@ -631,143 +597,166 @@
             clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
         }
 
-        /* ========== PAGE 6 - SCENARIO ========== */
+        /* ========== SECTION 6 - SCENARIO ========== */
         .scenario-panels {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin: 30px 0;
+            gap: 40px;
+            margin: 40px 0;
         }
 
         .panel {
             background: #f5f5f5;
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 25px;
+            padding: 40px;
             text-align: center;
             transition: all 0.5s ease;
-            min-height: 250px;
+            min-height: 300px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
 
         .panel.highlight {
             background: linear-gradient(135deg, #fff9c4 0%, #ffeaa7 100%);
-            transform: scale(1.05);
+            transform: scale(1.08);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
         }
 
         .character {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 20px;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 25px;
         }
 
         .character-head {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             background: #ffccbc;
             border-radius: 50%;
-            margin: 0 auto 10px;
+            margin: 0 auto 12px;
             position: relative;
         }
 
         .character-eyes {
             position: absolute;
-            top: 20px;
-            left: 15px;
+            top: 23px;
+            left: 17px;
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .eye {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             background: #4a4a4a;
             border-radius: 50%;
         }
 
         .character-mouth {
             position: absolute;
-            bottom: 15px;
+            bottom: 18px;
             left: 50%;
             transform: translateX(-50%);
-            width: 20px;
-            height: 10px;
-            border-bottom: 3px solid #4a4a4a;
+            width: 24px;
+            height: 12px;
+            border-bottom: 4px solid #4a4a4a;
         }
 
         .character-mouth.happy {
             border-bottom: none;
-            border-top: 3px solid #4a4a4a;
-            border-radius: 0 0 20px 20px;
+            border-top: 4px solid #4a4a4a;
+            border-radius: 0 0 24px 24px;
         }
 
         .character-body {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             background: #a1c4fd;
             margin: 0 auto;
-            border-radius: 10px;
+            border-radius: 12px;
         }
 
         .emotion-icon {
-            font-size: 3em;
-            margin-bottom: 10px;
+            font-size: 3.5em;
+            margin-bottom: 15px;
         }
 
         .panel-text {
-            font-size: 1.1em;
+            font-size: 1.2em;
             color: #4a4a4a;
-            line-height: 1.6;
+            line-height: 1.8;
         }
 
         .scenario-buttons {
             display: flex;
-            gap: 20px;
+            gap: 25px;
             justify-content: center;
-            margin: 30px 0;
+            margin: 40px 0;
             flex-wrap: wrap;
         }
 
         .parent-note {
-            background: rgba(161, 196, 253, 0.2);
-            padding: 15px;
-            border-radius: 15px;
+            background: rgba(161, 196, 253, 0.25);
+            padding: 20px;
+            border-radius: 20px;
             text-align: center;
             font-style: italic;
-            margin-top: 20px;
+            margin-top: 25px;
             color: #5c6bc0;
+            font-size: 1.1em;
         }
 
-        /* ========== PAGE 7 - ENDING ========== */
+        /* ========== SECTION 7 - ENDING ========== */
         .ending-content {
             text-align: center;
         }
 
         .ending-illustration {
-            margin: 30px 0;
+            margin: 40px 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 30px;
+            gap: 40px;
         }
 
         .parent-child-icon {
             display: flex;
             align-items: flex-end;
-            gap: 10px;
+            gap: 15px;
         }
 
         .parent-figure {
-            width: 80px;
-            height: 120px;
+            width: 100px;
+            height: 150px;
             background: linear-gradient(135deg, #7986cb 0%, #5c6bc0 100%);
-            border-radius: 15px 15px 0 0;
+            border-radius: 18px 18px 0 0;
             position: relative;
         }
 
         .parent-figure::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: #ffccbc;
+            border-radius: 50%;
+        }
+
+        .child-figure {
+            width: 75px;
+            height: 110px;
+            background: linear-gradient(135deg, #ffb6c1 0%, #ff8fab 100%);
+            border-radius: 18px 18px 0 0;
+            position: relative;
+        }
+
+        .child-figure::before {
             content: '';
             position: absolute;
             top: -30px;
@@ -779,54 +768,48 @@
             border-radius: 50%;
         }
 
-        .child-figure {
-            width: 60px;
-            height: 90px;
-            background: linear-gradient(135deg, #ffb6c1 0%, #ff8fab 100%);
-            border-radius: 15px 15px 0 0;
-            position: relative;
-        }
-
-        .child-figure::before {
-            content: '';
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 40px;
-            background: #ffccbc;
-            border-radius: 50%;
-        }
-
         .parent-tips {
             text-align: left;
-            margin: 30px auto;
-            max-width: 600px;
+            margin: 40px auto;
+            max-width: 700px;
         }
 
         .tip-item {
             background: white;
-            padding: 15px 20px;
-            margin: 15px 0;
-            border-radius: 15px;
-            border-left: 5px solid #66bb6a;
+            padding: 20px 25px;
+            margin: 18px 0;
+            border-radius: 18px;
+            border-left: 6px solid #66bb6a;
             transition: all 0.3s ease;
             cursor: pointer;
+            font-size: 1.05em;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
         }
 
         .tip-item:hover {
             background: #f1f8e9;
-            transform: translateX(5px);
+            transform: translateX(8px);
         }
 
         .tip-item::before {
             content: '💡 ';
-            margin-right: 10px;
+            margin-right: 12px;
         }
 
         /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
+            .section {
+                padding: 40px 20px;
+            }
+
+            .cover-title {
+                font-size: 3em;
+            }
+
+            .section-title {
+                font-size: 2em;
+            }
+
             .about-layout,
             .matching-game,
             .scenario-panels {
@@ -838,48 +821,33 @@
             }
 
             .piano-key {
-                width: 60px;
-                height: 200px;
-            }
-
-            .cover-title {
-                font-size: 2.5em;
-            }
-
-            .page-container {
-                padding: 20px;
+                width: 70px;
+                height: 220px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <div class="book-header">
-        <h1>Bright Path</h1>
-        <div class="subtitle">An interactive book of light and music for autistic children</div>
-    </div>
-
-    <!-- Page Container -->
-    <div class="page-container">
-        <!-- Page 1 - Cover -->
-        <div id="page1" class="page active">
+    <!-- Section 1 - Cover -->
+    <section id="section1" class="section">
+        <div class="section-content cover-container">
             <div class="cover-star"></div>
             <div class="floating-blob blob1"></div>
             <div class="floating-blob blob2"></div>
             <div class="floating-blob blob3"></div>
-            <div class="cover-content">
-                <h1 class="cover-title">Bright Path</h1>
-                <div class="cover-subtitle">Interactive Light & Music Therapy Book</div>
-                <p class="cover-dedication">
-                    "This book is made for young artists who feel the world in special ways."
-                </p>
-                <button class="button" onclick="nextPage()">Start Reading</button>
-            </div>
+            <h1 class="cover-title">Bright Path</h1>
+            <div class="cover-subtitle">Interactive Light & Music Therapy Book</div>
+            <p class="cover-dedication">
+                "This book is made for young artists who feel the world in special ways."
+            </p>
+            <button class="button" onclick="scrollToNext()">Start Reading</button>
         </div>
+    </section>
 
-        <!-- Page 2 - About -->
-        <div id="page2" class="page">
-            <h2 class="page-title">About Bright Path</h2>
+    <!-- Section 2 - About -->
+    <section id="section2" class="section">
+        <div class="section-content">
+            <h2 class="section-title">About Bright Path</h2>
             <div class="about-layout">
                 <div class="about-text">
                     <p>Bright Path was inspired by volunteering at a psychiatric hospital and learning about art therapy for autistic children.</p>
@@ -900,11 +868,13 @@
                 <div class="badge">Play together with family</div>
             </div>
         </div>
+    </section>
 
-        <!-- Page 3 - Piano of Feelings -->
-        <div id="page3" class="page">
-            <h2 class="page-title">Chapter 1 – Piano of Feelings</h2>
-            <p class="page-instruction">
+    <!-- Section 3 - Piano of Feelings -->
+    <section id="section3" class="section">
+        <div class="section-content">
+            <h2 class="section-title">Chapter 1 – Piano of Feelings</h2>
+            <p class="section-instruction">
                 Touch the keys to hear gentle notes. Ask your child which sound feels happy, calm, or excited.
             </p>
             <div class="piano-container">
@@ -917,11 +887,13 @@
                 <div id="pianoFeedback"></div>
             </div>
         </div>
+    </section>
 
-        <!-- Page 4 - Bedroom of Light -->
-        <div id="page4" class="page">
-            <h2 class="page-title">Chapter 2 – Bedroom of Light</h2>
-            <p class="page-instruction">
+    <!-- Section 4 - Bedroom of Light -->
+    <section id="section4" class="section">
+        <div class="section-content">
+            <h2 class="section-title">Chapter 2 – Bedroom of Light</h2>
+            <p class="section-instruction">
                 Turn the slider to change the bedroom light. Talk about bright and dark.
             </p>
             <div class="bedroom-scene" id="bedroomScene">
@@ -941,11 +913,13 @@
             </div>
             <div id="lightFeedback"></div>
         </div>
+    </section>
 
-        <!-- Page 5 - Match the Shapes -->
-        <div id="page5" class="page">
-            <h2 class="page-title">Chapter 3 – Match the Shapes</h2>
-            <p class="page-instruction">
+    <!-- Section 5 - Match the Shapes -->
+    <section id="section5" class="section">
+        <div class="section-content">
+            <h2 class="section-title">Chapter 3 – Match the Shapes</h2>
+            <p class="section-instruction">
                 Find the right shape and place it in the matching outline to turn on the light.
             </p>
             <div class="matching-game">
@@ -968,11 +942,13 @@
             </div>
             <div id="matchingFeedback"></div>
         </div>
+    </section>
 
-        <!-- Page 6 - Scenario Story -->
-        <div id="page6" class="page">
-            <h2 class="page-title">Scenario – Sharing Feelings</h2>
-            <p class="page-instruction">
+    <!-- Section 6 - Scenario Story -->
+    <section id="section6" class="section">
+        <div class="section-content">
+            <h2 class="section-title">Scenario – Sharing Feelings</h2>
+            <p class="section-instruction">
                 One day, a child feels nervous at school. They learn to share their feelings.
             </p>
             <div class="scenario-panels">
@@ -1017,91 +993,48 @@
                 Parents: Read the speech bubbles and ask your child how they feel today.
             </div>
         </div>
+    </section>
 
-        <!-- Page 7 - Ending -->
-        <div id="page7" class="page">
-            <div class="ending-content">
-                <h2 class="page-title">Thank You for Reading Bright Path</h2>
-                <div class="ending-illustration">
-                    <div class="parent-child-icon">
-                        <div class="parent-figure"></div>
-                        <div class="child-figure"></div>
-                    </div>
+    <!-- Section 7 - Ending -->
+    <section id="section7" class="section">
+        <div class="section-content ending-content">
+            <h2 class="section-title">Thank You for Reading Bright Path</h2>
+            <div class="ending-illustration">
+                <div class="parent-child-icon">
+                    <div class="parent-figure"></div>
+                    <div class="child-figure"></div>
                 </div>
-                <div class="parent-tips">
-                    <h3 style="text-align: center; color: #7986cb; margin-bottom: 20px;">Tips for Parents</h3>
-                    <div class="tip-item">
-                        Use the piano page to talk about feelings connected to sounds.
-                    </div>
-                    <div class="tip-item">
-                        Use the light page to practice focus and cause-and-effect.
-                    </div>
-                    <div class="tip-item">
-                        Use the matching and story pages to practice turn-taking and simple social situations.
-                    </div>
-                </div>
-                <button class="button" onclick="restartBook()">Restart the Book</button>
             </div>
+            <div class="parent-tips">
+                <h3 style="text-align: center; color: #7986cb; margin-bottom: 25px; font-size: 1.5em;">Tips for Parents</h3>
+                <div class="tip-item">
+                    Use the piano page to talk about feelings connected to sounds.
+                </div>
+                <div class="tip-item">
+                    Use the light page to practice focus and cause-and-effect.
+                </div>
+                <div class="tip-item">
+                    Use the matching and story pages to practice turn-taking and simple social situations.
+                </div>
+            </div>
+            <button class="button" onclick="scrollToTop()">Restart the Book</button>
         </div>
-    </div>
-
-    <!-- Navigation -->
-    <div class="navigation">
-        <button class="nav-button" id="prevBtn" onclick="prevPage()">◀ Previous</button>
-        <div class="progress">
-            <span id="currentPage">1</span> / <span id="totalPages">7</span>
-        </div>
-        <button class="nav-button" id="nextBtn" onclick="nextPage()">Next ▶</button>
-    </div>
+    </section>
 
     <script>
         // ========== GLOBAL STATE ==========
-        let currentPageNum = 1;
-        const totalPages = 7;
         let audioContext;
         let notesPlayed = 0;
         let currentEmotion = null;
         let lightMoved = false;
         let matchedShapes = 0;
 
-        // ========== NAVIGATION ==========
-        function showPage(pageNum) {
-            // Hide all pages
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-
-            // Show current page
-            document.getElementById('page' + pageNum).classList.add('active');
-
-            // Update progress
-            document.getElementById('currentPage').textContent = pageNum;
-
-            // Update buttons
-            document.getElementById('prevBtn').disabled = (pageNum === 1);
-            document.getElementById('nextBtn').disabled = (pageNum === totalPages);
-
-            currentPageNum = pageNum;
-
-            // Initialize page-specific features
-            if (pageNum === 3 && document.getElementById('pianoKeys').children.length === 0) {
-                setupPiano();
-            }
+        // ========== SCROLL NAVIGATION ==========
+        function scrollToNext() {
+            document.getElementById('section2').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function nextPage() {
-            if (currentPageNum < totalPages) {
-                showPage(currentPageNum + 1);
-            }
-        }
-
-        function prevPage() {
-            if (currentPageNum > 1) {
-                showPage(currentPageNum - 1);
-            }
-        }
-
-        function restartBook() {
+        function scrollToTop() {
             // Reset all progress
             notesPlayed = 0;
             currentEmotion = null;
@@ -1139,11 +1072,15 @@
             document.getElementById('lightSlider').value = 50;
             adjustLight(50);
 
-            // Go to first page
-            showPage(1);
+            // Reset scenario panels
+            document.getElementById('panel1').classList.remove('highlight');
+            document.getElementById('panel2').classList.remove('highlight');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ========== PAGE 3 - PIANO ==========
+        // ========== PIANO ==========
         function setupPiano() {
             const pianoKeys = document.getElementById('pianoKeys');
             const frequencies = [262, 294, 330, 349, 392, 440, 494, 523]; // C4 to C5
@@ -1176,7 +1113,7 @@
             note.className = 'music-note';
             note.textContent = '♪';
             keyElement.appendChild(note);
-            setTimeout(() => note.remove(), 1000);
+            setTimeout(() => note.remove(), 1200);
 
             // Play sound using Web Audio API
             if (!audioContext) {
@@ -1216,11 +1153,11 @@
             if (notesPlayed >= 3 && currentEmotion) {
                 feedback.innerHTML = '<div class="feedback-message">Great music! You\'re doing a wonderful job.</div>';
             } else if (notesPlayed >= 1 && !currentEmotion) {
-                feedback.innerHTML = '<div style="text-align: center; color: #7986cb; margin-top: 15px;">Choose an emotion and play a note.</div>';
+                feedback.innerHTML = '<div style="text-align: center; color: #7986cb; margin-top: 20px; font-size: 1.1em;">Choose an emotion and play a note.</div>';
             }
         }
 
-        // ========== PAGE 4 - LIGHT SCENE ==========
+        // ========== LIGHT SCENE ==========
         function adjustLight(value) {
             lightMoved = true;
             const scene = document.getElementById('bedroomScene');
@@ -1256,7 +1193,7 @@
             }
         }
 
-        // ========== PAGE 5 - MATCHING GAME ==========
+        // ========== MATCHING GAME ==========
         function setupMatchingGame() {
             const shapes = document.querySelectorAll('.shape');
             const outlines = document.querySelectorAll('.outline');
@@ -1313,7 +1250,7 @@
                             }, 10);
 
                             const feedback = document.getElementById('matchingFeedback');
-                            feedback.innerHTML = '<div style="text-align: center; color: #ff9800; margin-top: 15px;">Try another spot! 🤔</div>';
+                            feedback.innerHTML = '<div style="text-align: center; color: #ff9800; margin-top: 20px; font-size: 1.1em;">Try another spot! 🤔</div>';
                             setTimeout(() => {
                                 feedback.innerHTML = '';
                             }, 2000);
@@ -1331,7 +1268,7 @@
             }
         }
 
-        // ========== PAGE 6 - SCENARIO ==========
+        // ========== SCENARIO ==========
         function selectScenario(scenario) {
             const panel1 = document.getElementById('panel1');
             const panel2 = document.getElementById('panel2');
@@ -1347,15 +1284,15 @@
                 }, 300);
             } else if (scenario === 'better') {
                 panel2.classList.add('highlight');
-                document.body.style.background = 'linear-gradient(135deg, #ffe8f0 0%, #fff9c4 50%, #e1f5fe 100%)';
                 setTimeout(() => {
                     const heart = document.createElement('div');
                     heart.style.position = 'fixed';
                     heart.style.top = '50%';
                     heart.style.left = '50%';
                     heart.style.transform = 'translate(-50%, -50%)';
-                    heart.style.fontSize = '5em';
+                    heart.style.fontSize = '6em';
                     heart.style.animation = 'pulse 1s ease-in-out';
+                    heart.style.zIndex = '9999';
                     heart.textContent = '❤️';
                     document.body.appendChild(heart);
                     setTimeout(() => heart.remove(), 1000);
@@ -1365,17 +1302,8 @@
 
         // ========== INITIALIZE ==========
         document.addEventListener('DOMContentLoaded', () => {
-            showPage(1);
+            setupPiano();
             setupMatchingGame();
-
-            // Keyboard navigation
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight') {
-                    nextPage();
-                } else if (e.key === 'ArrowLeft') {
-                    prevPage();
-                }
-            });
         });
     </script>
 </body>
