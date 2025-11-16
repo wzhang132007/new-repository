@@ -17,12 +17,13 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 1440px;
-    height: 1024px;
+    width: 100vw;
+    height: 100vh;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
     transform-origin: center;
+    overflow: hidden;
 }
 
 .page.active {
@@ -38,9 +39,9 @@ body {
 
 .house-fly-lg {
     position: absolute;
-    width: 1820px;
-    height: 1024px;
-    left: -134px;
+    width: 126.39vw;
+    height: 100vh;
+    left: -9.31vw;
     top: 0;
 }
 
@@ -75,10 +76,10 @@ body {
 
 .house-fly-sm {
     position: absolute;
-    width: 502px;
-    height: 283px;
-    left: 769px;
-    top: 665px;
+    width: 34.86vw;
+    height: 27.64vh;
+    left: 53.4vw;
+    top: 64.94vh;
 }
 
 .house-fly-sm img {
@@ -94,10 +95,10 @@ body {
 
 .drawing {
     position: absolute;
-    width: 432.371px;
-    height: 233.984px;
-    left: 102.43px;
-    top: 77px;
+    width: 30.03vw;
+    height: 22.85vh;
+    left: 7.11vw;
+    top: 7.52vh;
 }
 
 .drawing-inner {
@@ -121,10 +122,10 @@ body {
     font-style: normal;
     font-weight: 400;
     color: #060405;
-    font-size: 200px;
+    font-size: 13.89vw;
     line-height: 1;
-    left: 419px;
-    top: 412px;
+    left: 29.1vw;
+    top: 40.23vh;
     white-space: nowrap;
     text-decoration: none;
     transition: transform 0.2s ease, opacity 0.3s ease;
@@ -174,17 +175,4 @@ body {
     transform: translateY(0);
 }
 
-/* Responsive adjustments */
-@media (max-width: 1440px) {
-    .page {
-        transform: scale(0.7);
-        transform-origin: top left;
-    }
-}
-
-@media (max-width: 1024px) {
-    .page {
-        transform: scale(0.5);
-        transform-origin: top left;
-    }
-}
+/* Removed responsive transform scaling - now using vw/vh units for fluid scaling */
