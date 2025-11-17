@@ -100,7 +100,7 @@
                 rgba(200, 230, 255, 0.4) 100%);
             border: 3px solid rgba(100, 150, 200, 0.5);
             border-radius: 0 0 10px 10px;
-            overflow: hidden;
+            overflow: visible;
             box-shadow: inset 0 0 20px rgba(255,255,255,0.5);
         }
 
@@ -122,21 +122,7 @@
             right: 0;
             transition: all 0.4s ease;
             border-radius: 0 0 7px 7px;
-        }
-
-        .liquid.reacting {
-            animation: glow 1s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% {
-                filter: brightness(1);
-                box-shadow: inset 0 0 20px rgba(255,255,255,0.3);
-            }
-            50% {
-                filter: brightness(1.4);
-                box-shadow: inset 0 0 30px rgba(255,255,255,0.6);
-            }
+            overflow: hidden;
         }
 
         .beaker-label {
@@ -157,6 +143,23 @@
             height: 10px;
             border-radius: 50%;
             border: 2px solid white;
+        }
+
+        .reaction-type {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 11px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .beaker-container.completed .reaction-type {
+            opacity: 1;
         }
 
         #chemicals-panel {
@@ -209,28 +212,110 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        .reaction-particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .particle {
+        /* 气泡效果 */
+        .bubble {
             position: absolute;
             border-radius: 50%;
-            animation: particle-rise 2s ease-out forwards;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.3));
+            border: 1px solid rgba(255,255,255,0.5);
+            animation: bubble-rise 2s ease-out forwards;
         }
 
-        @keyframes particle-rise {
+        @keyframes bubble-rise {
             0% {
                 opacity: 1;
-                transform: translateY(0) scale(1);
+                transform: translateY(0) translateX(0) scale(0.5);
+            }
+            50% {
+                transform: translateY(-60px) translateX(10px) scale(1);
             }
             100% {
                 opacity: 0;
-                transform: translateY(-100px) scale(0.5);
+                transform: translateY(-120px) translateX(-5px) scale(0.3);
+            }
+        }
+
+        /* 爆炸粒子 */
+        .explosion-particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(0.2);
+            }
+        }
+
+        /* 蒸汽效果 */
+        .steam {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255,255,255,0.7), rgba(200,200,200,0.3));
+            border-radius: 50%;
+            animation: steam-rise 3s ease-out forwards;
+        }
+
+        @keyframes steam-rise {
+            0% {
+                opacity: 0.8;
+                transform: translateY(0) scale(0.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-150px) scale(2);
+            }
+        }
+
+        /* 颜色变化动画 */
+        .color-change {
+            animation: color-pulse 2s ease-in-out;
+        }
+
+        @keyframes color-pulse {
+            0%, 100% {
+                filter: brightness(1);
+            }
+            25% {
+                filter: brightness(1.5) saturate(1.5);
+            }
+            50% {
+                filter: brightness(2) saturate(2);
+            }
+            75% {
+                filter: brightness(1.5) saturate(1.5);
+            }
+        }
+
+        /* 震动效果 */
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        /* 发光效果 */
+        .glow {
+            animation: glow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                filter: brightness(1);
+                box-shadow: inset 0 0 20px rgba(255,255,255,0.3);
+            }
+            50% {
+                filter: brightness(1.6);
+                box-shadow: inset 0 0 40px rgba(255,255,255,0.8);
             }
         }
 
@@ -269,6 +354,7 @@
             font-size: 18px;
             color: #666;
             margin-bottom: 30px;
+            line-height: 1.6;
         }
 
         .modal-btn {
@@ -306,7 +392,7 @@
     <div id="completion-modal">
         <div class="modal-content">
             <h2>🎉 恭喜完成！</h2>
-            <p>你已经完成了所有6个烧杯的化学实验！<br><br>观察每个烧杯的颜色变化和反应效果，这就是化学的魅力！</p>
+            <p id="completion-summary"></p>
             <button class="modal-btn" onclick="location.reload()">重新开始</button>
         </div>
     </div>
@@ -322,27 +408,33 @@
             { name: '青色', color: '#00FFFF', rgb: 'rgb(0, 255, 255)' }
         ];
 
+        const REACTION_TYPES = {
+            EXPLOSION: { name: '💥爆炸', emoji: '💥' },
+            BUBBLES: { name: '💧气泡', emoji: '💧' },
+            STEAM: { name: '💨蒸汽', emoji: '💨' },
+            COLOR_CHANGE: { name: '🌈变色', emoji: '🌈' },
+            GLOW: { name: '✨发光', emoji: '✨' }
+        };
+
         let selectedChemical = null;
         let beakers = [];
         let completedCount = 0;
+        let reactionSummary = [];
 
-        // 初始化
         function init() {
             createBeakers();
             createChemicalButtons();
             updateInstructions();
         }
 
-        // 创建烧杯
         function createBeakers() {
             const beakersArea = document.getElementById('beakers-area');
             for (let i = 0; i < 6; i++) {
                 const container = document.createElement('div');
                 container.className = 'beaker-container';
                 container.innerHTML = `
-                    <div class="beaker">
-                        <div class="reaction-particles"></div>
-                    </div>
+                    <div class="reaction-type"></div>
+                    <div class="beaker"></div>
                     <div class="beaker-label">烧杯 ${i + 1}</div>
                     <div class="substance-indicator"></div>
                 `;
@@ -353,12 +445,12 @@
                     element: container,
                     beakerElement: container.querySelector('.beaker'),
                     substances: [],
-                    completed: false
+                    completed: false,
+                    reactionType: null
                 });
             }
         }
 
-        // 创建化学品按钮
         function createChemicalButtons() {
             const panel = document.getElementById('chemicals-panel');
             CHEMICALS.forEach((chem, index) => {
@@ -371,7 +463,6 @@
             });
         }
 
-        // 选择化学品
         function selectChemical(index) {
             selectedChemical = index;
             const btns = document.querySelectorAll('.chemical-btn');
@@ -381,7 +472,6 @@
             updateInstructions();
         }
 
-        // 添加化学品到烧杯
         function addChemicalToBeaker(beakerIndex) {
             if (selectedChemical === null) {
                 alert('请先选择一种化学品！');
@@ -405,31 +495,26 @@
             updateBeakerVisual(beakerIndex);
 
             if (beaker.substances.length === 3) {
-                triggerReaction(beakerIndex);
+                setTimeout(() => triggerReaction(beakerIndex), 300);
             }
         }
 
-        // 更新烧杯视觉
         function updateBeakerVisual(beakerIndex) {
             const beaker = beakers[beakerIndex];
             const beakerElement = beaker.beakerElement;
 
-            // 移除旧液体
             const oldLiquid = beakerElement.querySelector('.liquid');
             if (oldLiquid) oldLiquid.remove();
 
-            // 计算混合颜色
             const mixedColor = mixColors(beaker.substances.map(s => s.rgb));
             const height = (beaker.substances.length / 3) * 100;
 
-            // 创建新液体
             const liquid = document.createElement('div');
             liquid.className = 'liquid';
             liquid.style.background = `linear-gradient(to top, ${mixedColor}, ${lightenColor(mixedColor)})`;
             liquid.style.height = height + '%';
             beakerElement.appendChild(liquid);
 
-            // 更新指示器
             const indicator = beaker.element.querySelector('.substance-indicator');
             indicator.innerHTML = '';
             beaker.substances.forEach(sub => {
@@ -440,51 +525,166 @@
             });
         }
 
-        // 触发反应
+        function determineReactionType(substances) {
+            const names = substances.map(s => s.name);
+
+            // 爆炸：红色 + 橙色 或 红色 + 黄色
+            if ((names.includes('红色') && names.includes('橙色')) ||
+                (names.includes('红色') && names.includes('黄色')) ||
+                (names.includes('红色') && names.includes('绿色'))) {
+                return REACTION_TYPES.EXPLOSION;
+            }
+
+            // 气泡：绿色 + 蓝色 或 含有绿色
+            if (names.includes('绿色') || (names.includes('蓝色') && names.includes('黄色'))) {
+                return REACTION_TYPES.BUBBLES;
+            }
+
+            // 蒸汽：蓝色 + 红色（冷热反应）
+            if (names.includes('蓝色') && names.includes('红色')) {
+                return REACTION_TYPES.STEAM;
+            }
+
+            // 发光：紫色 + 青色 或 相同颜色
+            if (names.every(n => n === names[0])) {
+                return REACTION_TYPES.GLOW;
+            }
+
+            // 默认：颜色变化
+            return REACTION_TYPES.COLOR_CHANGE;
+        }
+
         function triggerReaction(beakerIndex) {
             const beaker = beakers[beakerIndex];
-            const liquid = beaker.beakerElement.querySelector('.liquid');
+            const reactionType = determineReactionType(beaker.substances);
+            beaker.reactionType = reactionType;
 
-            liquid.classList.add('reacting');
+            // 显示反应类型
+            const typeLabel = beaker.element.querySelector('.reaction-type');
+            typeLabel.textContent = reactionType.name;
 
-            // 创建粒子效果
-            createParticles(beaker.beakerElement, beaker.substances[0].color);
+            // 添加震动效果
+            beaker.element.classList.add('shake');
+            setTimeout(() => beaker.element.classList.remove('shake'), 500);
+
+            // 根据反应类型触发不同效果
+            switch(reactionType) {
+                case REACTION_TYPES.EXPLOSION:
+                    createExplosion(beaker);
+                    break;
+                case REACTION_TYPES.BUBBLES:
+                    createBubbles(beaker);
+                    break;
+                case REACTION_TYPES.STEAM:
+                    createSteam(beaker);
+                    break;
+                case REACTION_TYPES.COLOR_CHANGE:
+                    createColorChange(beaker);
+                    break;
+                case REACTION_TYPES.GLOW:
+                    createGlow(beaker);
+                    break;
+            }
 
             setTimeout(() => {
-                liquid.classList.remove('reacting');
                 beaker.completed = true;
                 beaker.element.classList.add('completed');
                 completedCount++;
                 updateStageInfo();
 
+                reactionSummary.push(`烧杯${beakerIndex + 1}: ${reactionType.emoji}${reactionType.name}`);
+
                 if (completedCount === 6) {
-                    setTimeout(() => {
-                        document.getElementById('completion-modal').classList.add('show');
-                    }, 1000);
+                    setTimeout(() => showCompletion(), 1000);
                 }
-            }, 3000);
+            }, 3500);
         }
 
-        // 创建粒子
-        function createParticles(container, color) {
-            const particlesContainer = container.querySelector('.reaction-particles');
-            for (let i = 0; i < 15; i++) {
+        function createExplosion(beaker) {
+            const liquid = beaker.beakerElement.querySelector('.liquid');
+            liquid.classList.add('color-change');
+
+            // 创建爆炸粒子
+            for (let i = 0; i < 30; i++) {
                 setTimeout(() => {
                     const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.width = (Math.random() * 8 + 4) + 'px';
+                    particle.className = 'explosion-particle';
+                    particle.style.width = (Math.random() * 12 + 6) + 'px';
                     particle.style.height = particle.style.width;
-                    particle.style.background = color;
-                    particle.style.left = (Math.random() * 80 + 10) + '%';
-                    particle.style.bottom = '10%';
-                    particlesContainer.appendChild(particle);
+                    particle.style.background = beaker.substances[Math.floor(Math.random() * 3)].color;
+                    particle.style.left = '50%';
+                    particle.style.bottom = '30%';
 
-                    setTimeout(() => particle.remove(), 2000);
-                }, i * 100);
+                    const angle = (Math.random() * 360) * Math.PI / 180;
+                    const distance = Math.random() * 100 + 50;
+                    particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                    particle.style.setProperty('--ty', Math.sin(angle) * distance - 50 + 'px');
+
+                    beaker.beakerElement.appendChild(particle);
+                    setTimeout(() => particle.remove(), 1000);
+                }, i * 30);
             }
         }
 
-        // 混合颜色
+        function createBubbles(beaker) {
+            const liquid = beaker.beakerElement.querySelector('.liquid');
+
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'bubble';
+                    const size = Math.random() * 15 + 8;
+                    bubble.style.width = size + 'px';
+                    bubble.style.height = size + 'px';
+                    bubble.style.left = (Math.random() * 80 + 10) + '%';
+                    bubble.style.bottom = '5%';
+                    beaker.beakerElement.appendChild(bubble);
+                    setTimeout(() => bubble.remove(), 2000);
+                }, i * 80);
+            }
+        }
+
+        function createSteam(beaker) {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const steam = document.createElement('div');
+                    steam.className = 'steam';
+                    const size = Math.random() * 30 + 20;
+                    steam.style.width = size + 'px';
+                    steam.style.height = size + 'px';
+                    steam.style.left = (Math.random() * 60 + 20) + '%';
+                    steam.style.bottom = '100%';
+                    beaker.beakerElement.appendChild(steam);
+                    setTimeout(() => steam.remove(), 3000);
+                }, i * 150);
+            }
+        }
+
+        function createColorChange(beaker) {
+            const liquid = beaker.beakerElement.querySelector('.liquid');
+            liquid.classList.add('color-change');
+
+            let hue = 0;
+            const interval = setInterval(() => {
+                hue += 10;
+                liquid.style.filter = `hue-rotate(${hue}deg) saturate(1.5)`;
+                if (hue >= 180) {
+                    clearInterval(interval);
+                    liquid.style.filter = '';
+                    liquid.classList.remove('color-change');
+                }
+            }, 100);
+        }
+
+        function createGlow(beaker) {
+            const liquid = beaker.beakerElement.querySelector('.liquid');
+            liquid.classList.add('glow');
+
+            setTimeout(() => {
+                liquid.classList.remove('glow');
+            }, 3000);
+        }
+
         function mixColors(rgbStrings) {
             let r = 0, g = 0, b = 0;
             rgbStrings.forEach(rgb => {
@@ -497,7 +697,6 @@
             return `rgb(${Math.floor(r/count)}, ${Math.floor(g/count)}, ${Math.floor(b/count)})`;
         }
 
-        // 加深颜色
         function darkenColor(hex) {
             const num = parseInt(hex.replace('#', ''), 16);
             const r = Math.max(0, ((num >> 16) & 0xff) - 40);
@@ -506,7 +705,6 @@
             return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
         }
 
-        // 提亮颜色
         function lightenColor(rgb) {
             const matches = rgb.match(/\d+/g);
             const r = Math.min(255, parseInt(matches[0]) + 60);
@@ -515,7 +713,6 @@
             return `rgb(${r}, ${g}, ${b})`;
         }
 
-        // 更新提示
         function updateInstructions() {
             const inst = document.getElementById('instructions');
             if (selectedChemical === null) {
@@ -525,12 +722,22 @@
             }
         }
 
-        // 更新阶段信息
         function updateStageInfo() {
             document.getElementById('stage-info').textContent = `阶段 1/2 | 完成: ${completedCount}/6`;
         }
 
-        // 启动
+        function showCompletion() {
+            const summary = document.getElementById('completion-summary');
+            summary.innerHTML = `
+                你成功完成了所有6个化学实验！<br><br>
+                <strong>反应总结：</strong><br>
+                ${reactionSummary.join('<br>')}
+                <br><br>
+                每种化学品组合都产生了独特的反应效果！
+            `;
+            document.getElementById('completion-modal').classList.add('show');
+        }
+
         init();
     </script>
 </body>
