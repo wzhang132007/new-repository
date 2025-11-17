@@ -1,6 +1,16 @@
-# Chemical Laboratory Simulator
+# Chemical Laboratory Simulator 🧪⚗️
 
-An interactive chemical laboratory simulation where users can mix colored chemical substances in beakers to create different reactions, then pour them into a distillation apparatus for a final spectacular effect!
+An immersive **3D chemical laboratory simulation** with fullscreen experience where users can mix colored chemical substances in beakers to create different reactions, then pour them into a distillation apparatus for a final spectacular effect!
+
+## ✨ NEW: 3D Features
+
+- **Fullscreen 3D Experience**: Laboratory fills the entire computer screen with realistic depth perception
+- **Automatic Scene Transition**: When all 6 beakers are complete, automatically transitions to Scene 2 after 3 seconds
+- **3D Perspective**: All elements have depth and dimension with CSS 3D transforms
+- **Realistic Lighting**: Enhanced shadows, reflections, and highlights on beakers and chemicals
+- **Smooth 3D Animations**: Scene transitions with 3D rotation and depth effects
+- **Interactive Depth**: Elements respond to hover with 3D movement and scaling
+- **Floating Elements**: Animated header and chemicals with depth translation
 
 ## Features
 
@@ -35,8 +45,8 @@ An interactive chemical laboratory simulation where users can mix colored chemic
 1. **Select a Chemical**: Click on one of the colored chemical substances (Yellow, Blue, Green, Purple, Red, Orange)
 2. **Add to Beaker**: Click on a beaker to add the selected chemical to it
 3. **Fill Beakers**: Add 3 substances to each beaker (you can use the same substance multiple times)
-4. **Watch Reactions**: Each completed beaker will show its unique reaction
-5. **Complete All 6**: Fill all 6 beakers to unlock Scene 2
+4. **Watch Reactions**: Each completed beaker will show its unique reaction with emoji effects
+5. **Complete All 6**: Fill all 6 beakers - **The scene will automatically transition to Scene 2 after 3 seconds!**
 
 ### Scene 2 Instructions
 
