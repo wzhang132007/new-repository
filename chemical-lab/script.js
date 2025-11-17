@@ -174,12 +174,6 @@ function updateBeakerVisual(beakerNum) {
 
     // Update status text
     statusElement.textContent = `${beaker.substances.length}/3`;
-
-    // Add animation
-    beakerElement.style.animation = 'none';
-    setTimeout(() => {
-        beakerElement.style.animation = 'fillUp 0.5s ease';
-    }, 10);
 }
 
 // Complete a beaker and trigger reaction
@@ -243,14 +237,160 @@ function getReaction(substances) {
 function showReactionEffect(beakerNum, reaction) {
     const beakerElement = document.querySelector(`.beaker[data-beaker="${beakerNum}"]`);
     const effectElement = beakerElement.querySelector('.reaction-effect');
+    const beakerGlass = beakerElement.querySelector('.beaker-glass');
 
-    effectElement.textContent = reaction.emoji;
-
-    // Add reaction-specific animation
+    // Clear previous effects
+    effectElement.innerHTML = '';
     effectElement.className = 'reaction-effect';
-    setTimeout(() => {
+
+    // Create particles based on reaction type
+    if (reaction.type === 'explosion') {
+        createExplosionEffect(beakerGlass, effectElement);
+    } else if (reaction.type === 'bubbles') {
+        createBubblesEffect(beakerGlass, effectElement);
+    } else if (reaction.type === 'steam') {
+        createSteamEffect(beakerGlass, effectElement);
+    } else if (reaction.type === 'glow') {
+        createGlowEffect(beakerGlass, effectElement);
+    } else if (reaction.type === 'freeze') {
+        createFreezeEffect(beakerGlass, effectElement);
+    } else {
+        // Default emoji display for other types
+        effectElement.textContent = reaction.emoji;
         effectElement.classList.add(`reaction-${reaction.type}`);
-    }, 100);
+    }
+}
+
+// Create explosion effect with fire particles
+function createExplosionEffect(container, effectElement) {
+    const createFlame = () => {
+        const flame = document.createElement('div');
+        flame.className = 'flame-particle';
+        flame.textContent = '🔥';
+        flame.style.left = Math.random() * 80 + 10 + '%';
+        flame.style.animationDelay = Math.random() * 0.5 + 's';
+        flame.style.animationDuration = Math.random() * 1 + 1 + 's';
+        effectElement.appendChild(flame);
+
+        setTimeout(() => flame.remove(), 2000);
+    };
+
+    // Create initial flames
+    for (let i = 0; i < 8; i++) {
+        setTimeout(() => createFlame(), i * 100);
+    }
+
+    // Continue creating flames
+    const flameInterval = setInterval(() => {
+        createFlame();
+    }, 500);
+
+    // Store interval to clear later if needed
+    effectElement.flameInterval = flameInterval;
+}
+
+// Create bubbles effect
+function createBubblesEffect(container, effectElement) {
+    const createBubble = () => {
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble-particle';
+        bubble.textContent = '○';
+        const size = Math.random() * 15 + 10;
+        bubble.style.fontSize = size + 'px';
+        bubble.style.left = Math.random() * 80 + 10 + '%';
+        bubble.style.animationDelay = Math.random() * 0.5 + 's';
+        bubble.style.animationDuration = Math.random() * 2 + 2 + 's';
+        effectElement.appendChild(bubble);
+
+        setTimeout(() => bubble.remove(), 4000);
+    };
+
+    // Create bubbles continuously
+    for (let i = 0; i < 5; i++) {
+        setTimeout(() => createBubble(), i * 200);
+    }
+
+    const bubbleInterval = setInterval(() => {
+        createBubble();
+    }, 600);
+
+    effectElement.bubbleInterval = bubbleInterval;
+}
+
+// Create steam/gas effect
+function createSteamEffect(container, effectElement) {
+    const createSteam = () => {
+        const steam = document.createElement('div');
+        steam.className = 'steam-particle';
+        steam.textContent = '💨';
+        steam.style.left = Math.random() * 60 + 20 + '%';
+        steam.style.animationDelay = Math.random() * 0.3 + 's';
+        steam.style.animationDuration = Math.random() * 1.5 + 2 + 's';
+        effectElement.appendChild(steam);
+
+        setTimeout(() => steam.remove(), 3500);
+    };
+
+    for (let i = 0; i < 4; i++) {
+        setTimeout(() => createSteam(), i * 250);
+    }
+
+    const steamInterval = setInterval(() => {
+        createSteam();
+    }, 800);
+
+    effectElement.steamInterval = steamInterval;
+}
+
+// Create glow effect
+function createGlowEffect(container, effectElement) {
+    const glow = document.createElement('div');
+    glow.className = 'glow-particle';
+    glow.textContent = '✨';
+    effectElement.appendChild(glow);
+
+    const createSparkle = () => {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle-particle';
+        sparkle.textContent = '✨';
+        sparkle.style.left = Math.random() * 80 + 10 + '%';
+        sparkle.style.bottom = Math.random() * 60 + 20 + '%';
+        sparkle.style.animationDelay = Math.random() * 0.5 + 's';
+        effectElement.appendChild(sparkle);
+
+        setTimeout(() => sparkle.remove(), 2000);
+    };
+
+    const sparkleInterval = setInterval(() => {
+        createSparkle();
+    }, 400);
+
+    effectElement.sparkleInterval = sparkleInterval;
+}
+
+// Create freeze effect
+function createFreezeEffect(container, effectElement) {
+    const createIce = () => {
+        const ice = document.createElement('div');
+        ice.className = 'ice-particle';
+        ice.textContent = '❄️';
+        ice.style.left = Math.random() * 80 + 10 + '%';
+        ice.style.animationDelay = Math.random() * 0.5 + 's';
+        ice.style.animationDuration = Math.random() * 1 + 2 + 's';
+        effectElement.appendChild(ice);
+
+        setTimeout(() => ice.remove(), 3000);
+    };
+
+    for (let i = 0; i < 6; i++) {
+        setTimeout(() => createIce(), i * 200);
+    }
+
+    const iceInterval = setInterval(() => {
+        createIce();
+    }, 700);
+
+    effectElement.iceInterval = iceInterval;
 }
 
 // Clear selected beaker
@@ -287,7 +427,15 @@ function clearBeaker() {
         statusElement.textContent = '0/3';
 
         const effectElement = beakerElement.querySelector('.reaction-effect');
-        effectElement.textContent = '';
+
+        // Clear all particle intervals
+        if (effectElement.flameInterval) clearInterval(effectElement.flameInterval);
+        if (effectElement.bubbleInterval) clearInterval(effectElement.bubbleInterval);
+        if (effectElement.steamInterval) clearInterval(effectElement.steamInterval);
+        if (effectElement.sparkleInterval) clearInterval(effectElement.sparkleInterval);
+        if (effectElement.iceInterval) clearInterval(effectElement.iceInterval);
+
+        effectElement.innerHTML = '';
         effectElement.className = 'reaction-effect';
 
         beakerElement.classList.remove('complete');
