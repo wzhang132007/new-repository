@@ -131,13 +131,15 @@ body {
 .chemical-palette {
     display: flex;
     justify-content: flex-start;
+    align-items: flex-start;
     gap: 12px;
     margin: 10px 0 10px 20px;
     flex-wrap: wrap;
-    max-width: 800px;
+    max-width: 600px;
     transform-style: preserve-3d;
     perspective: 1000px;
     flex-shrink: 0;
+    align-self: flex-start;
 }
 
 .chemical-item {
@@ -219,12 +221,13 @@ body {
 
 /* Selected Chemical Indicator */
 .selected-chemical {
-    text-align: center;
+    text-align: left;
     color: white;
     font-size: 1.1em;
-    margin: 8px 0;
+    margin: 8px 0 8px 20px;
     font-weight: bold;
     flex-shrink: 0;
+    align-self: flex-start;
 }
 
 #selectedChemical {
