@@ -28,20 +28,35 @@ const chemicalColors = {
 
 // Reaction Database - Different combinations create different reactions
 const reactionDatabase = {
+    // Fire Burst reactions - dramatic flames bursting out
+    'red-red-orange': { type: 'fireburst', emoji: '🔥', name: 'Inferno Burst' },
+    'orange-orange-red': { type: 'fireburst', emoji: '🔥', name: 'Flame Eruption' },
+    'red-orange-yellow': { type: 'fireburst', emoji: '🔥', name: 'Fire Storm' },
+
     // Explosion reactions
     'red-yellow-blue': { type: 'explosion', emoji: '💥', name: 'Explosive Mixture' },
-    'red-red-red': { type: 'explosion', emoji: '🔥', name: 'Triple Fire' },
+    'red-red-red': { type: 'explosion', emoji: '💥', name: 'Triple Explosion' },
     'orange-red-yellow': { type: 'explosion', emoji: '💥', name: 'Combustion' },
 
     // Bubble reactions
     'blue-green-yellow': { type: 'bubbles', emoji: '🫧', name: 'Fizzy Solution' },
-    'blue-blue-green': { type: 'bubbles', emoji: '💚', name: 'Ocean Bubbles' },
+    'blue-blue-green': { type: 'bubbles', emoji: '🫧', name: 'Ocean Bubbles' },
     'green-yellow-blue': { type: 'bubbles', emoji: '🫧', name: 'Foaming Agent' },
+
+    // Plant Growth reactions - plants growing from bottom
+    'green-green-yellow': { type: 'plant', emoji: '🌱', name: 'Rapid Growth' },
+    'green-yellow-green': { type: 'plant', emoji: '🌿', name: 'Bio Cultivation' },
+    'yellow-green-green': { type: 'plant', emoji: '🌾', name: 'Organic Synthesis' },
 
     // Steam/Gas reactions
     'purple-yellow-green': { type: 'steam', emoji: '💨', name: 'Toxic Gas' },
     'purple-purple-blue': { type: 'steam', emoji: '☁️', name: 'Purple Haze' },
-    'green-green-green': { type: 'steam', emoji: '🌿', name: 'Herbal Vapor' },
+    'green-green-green': { type: 'steam', emoji: '💨', name: 'Herbal Vapor' },
+
+    // Liquid Freeze reactions - liquid turns frozen
+    'blue-blue-purple': { type: 'liquidfreeze', emoji: '🧊', name: 'Instant Freeze' },
+    'purple-blue-blue': { type: 'liquidfreeze', emoji: '❄️', name: 'Cryogenic Mix' },
+    'blue-purple-purple': { type: 'liquidfreeze', emoji: '🧊', name: 'Frozen Solid' },
 
     // Crystallization reactions
     'blue-purple-red': { type: 'crystal', emoji: '💎', name: 'Crystal Formation' },
@@ -51,9 +66,9 @@ const reactionDatabase = {
     'purple-green-yellow': { type: 'glow', emoji: '🌟', name: 'Bioluminescence' },
     'blue-yellow-purple': { type: 'glow', emoji: '✨', name: 'Glowing Mixture' },
 
-    // Freeze reactions
-    'blue-blue-blue': { type: 'freeze', emoji: '❄️', name: 'Deep Freeze' },
-    'blue-purple-green': { type: 'freeze', emoji: '🧊', name: 'Ice Formation' },
+    // Snowflake reactions (ice particles falling)
+    'blue-blue-blue': { type: 'freeze', emoji: '❄️', name: 'Snowfall' },
+    'blue-purple-green': { type: 'freeze', emoji: '❄️', name: 'Ice Crystals' },
 
     // Default reactions
     'default': { type: 'neutral', emoji: '⚗️', name: 'Stable Solution' }
@@ -244,12 +259,18 @@ function showReactionEffect(beakerNum, reaction) {
     effectElement.className = 'reaction-effect';
 
     // Create particles based on reaction type
-    if (reaction.type === 'explosion') {
+    if (reaction.type === 'fireburst') {
+        createFireBurstEffect(beakerGlass, effectElement);
+    } else if (reaction.type === 'explosion') {
         createExplosionEffect(beakerGlass, effectElement);
     } else if (reaction.type === 'bubbles') {
         createBubblesEffect(beakerGlass, effectElement);
+    } else if (reaction.type === 'plant') {
+        createPlantGrowthEffect(beakerGlass, effectElement);
     } else if (reaction.type === 'steam') {
         createSteamEffect(beakerGlass, effectElement);
+    } else if (reaction.type === 'liquidfreeze') {
+        createLiquidFreezeEffect(beakerGlass, effectElement);
     } else if (reaction.type === 'glow') {
         createGlowEffect(beakerGlass, effectElement);
     } else if (reaction.type === 'freeze') {
@@ -466,6 +487,146 @@ function createFreezeEffect(container, effectElement) {
     }, 800);
 
     effectElement.iceInterval = iceInterval;
+}
+
+// Create fire burst effect - flames bursting upward dramatically
+function createFireBurstEffect(container, effectElement) {
+    const maxParticles = 4; // More particles for dramatic effect
+
+    const createFireBurst = () => {
+        const fire = document.createElement('div');
+        fire.className = 'fireburst-particle';
+        fire.textContent = '🔥';
+        fire.style.left = Math.random() * 60 + 20 + '%';
+        fire.style.animationDelay = Math.random() * 0.2 + 's';
+        fire.style.animationDuration = Math.random() * 1 + 1.5 + 's';
+        fire.style.opacity = '0';
+        fire.style.fontSize = (Math.random() * 1 + 1.5) + 'em';
+        effectElement.appendChild(fire);
+
+        // Gradually fade in
+        setTimeout(() => {
+            fire.style.transition = 'opacity 0.3s ease-in';
+            fire.style.opacity = '1';
+        }, 50);
+
+        setTimeout(() => fire.remove(), 2500);
+    };
+
+    // Gradually introduce fire bursts
+    let delay = 0;
+    for (let i = 0; i < maxParticles; i++) {
+        setTimeout(() => createFireBurst(), delay);
+        delay += 200; // Quick stagger for burst effect
+    }
+
+    // Continue creating fire bursts
+    const fireInterval = setInterval(() => {
+        createFireBurst();
+    }, 600); // Faster interval for dramatic effect
+
+    effectElement.fireInterval = fireInterval;
+}
+
+// Create plant growth effect - plants growing from bottom
+function createPlantGrowthEffect(container, effectElement) {
+    const maxParticles = 3;
+    const plantEmojis = ['🌱', '🌿', '🌾', '☘️'];
+
+    const createPlant = () => {
+        const plant = document.createElement('div');
+        plant.className = 'plant-particle';
+        plant.textContent = plantEmojis[Math.floor(Math.random() * plantEmojis.length)];
+        plant.style.left = Math.random() * 70 + 15 + '%';
+        plant.style.animationDelay = Math.random() * 0.3 + 's';
+        plant.style.animationDuration = Math.random() * 1.5 + 2 + 's';
+        plant.style.opacity = '0';
+        plant.style.fontSize = (Math.random() * 0.5 + 1) + 'em';
+        effectElement.appendChild(plant);
+
+        // Gradually fade in
+        setTimeout(() => {
+            plant.style.transition = 'opacity 0.6s ease-in';
+            plant.style.opacity = '1';
+        }, 50);
+
+        setTimeout(() => plant.remove(), 4000);
+    };
+
+    // Gradually introduce plants
+    let delay = 0;
+    for (let i = 0; i < maxParticles; i++) {
+        setTimeout(() => createPlant(), delay);
+        delay += 400; // Stagger for growth effect
+    }
+
+    // Continue creating plants
+    const plantInterval = setInterval(() => {
+        createPlant();
+    }, 1000); // Slower for organic growth
+
+    effectElement.plantInterval = plantInterval;
+}
+
+// Create liquid freeze effect - liquid visually freezes
+function createLiquidFreezeEffect(container, effectElement) {
+    // Add frozen overlay to liquid layers
+    const liquidContainer = container.querySelector('.liquid-container');
+
+    // Create frozen overlay
+    const frozenOverlay = document.createElement('div');
+    frozenOverlay.className = 'frozen-overlay';
+    frozenOverlay.style.position = 'absolute';
+    frozenOverlay.style.bottom = '0';
+    frozenOverlay.style.left = '0';
+    frozenOverlay.style.right = '0';
+    frozenOverlay.style.height = '100%';
+    frozenOverlay.style.background = 'linear-gradient(180deg, rgba(173, 216, 230, 0.6) 0%, rgba(135, 206, 235, 0.8) 100%)';
+    frozenOverlay.style.opacity = '0';
+    frozenOverlay.style.transition = 'opacity 1s ease-in';
+    frozenOverlay.style.pointerEvents = 'none';
+    frozenOverlay.style.zIndex = '5';
+    liquidContainer.appendChild(frozenOverlay);
+
+    // Fade in frozen effect
+    setTimeout(() => {
+        frozenOverlay.style.opacity = '1';
+    }, 100);
+
+    // Add ice crystals appearing on surface
+    const maxParticles = 4;
+
+    const createIceCrystal = () => {
+        const crystal = document.createElement('div');
+        crystal.className = 'ice-crystal-particle';
+        crystal.textContent = '❄️';
+        crystal.style.left = Math.random() * 80 + 10 + '%';
+        crystal.style.bottom = Math.random() * 60 + 20 + '%';
+        crystal.style.animationDelay = Math.random() * 0.5 + 's';
+        crystal.style.opacity = '0';
+        crystal.style.fontSize = (Math.random() * 0.5 + 0.8) + 'em';
+        effectElement.appendChild(crystal);
+
+        // Gradually fade in
+        setTimeout(() => {
+            crystal.style.transition = 'opacity 0.8s ease-in';
+            crystal.style.opacity = '1';
+        }, 50);
+    };
+
+    // Gradually introduce ice crystals
+    let delay = 0;
+    for (let i = 0; i < maxParticles; i++) {
+        setTimeout(() => createIceCrystal(), delay);
+        delay += 500; // Stagger crystal formation
+    }
+
+    // Continue creating occasional ice crystals
+    const crystalInterval = setInterval(() => {
+        createIceCrystal();
+    }, 1200);
+
+    effectElement.crystalInterval = crystalInterval;
 }
 
 // Clear selected beaker
