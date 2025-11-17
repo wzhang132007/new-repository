@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D化学实验室</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            z-index: 9999;
+        }
+
+        .spinner {
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #loadingText {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        #loadingDetails {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        #container {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #ui {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+        }
+
+        #title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        #info {
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 16px;
+            background: rgba(0,0,0,0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        #instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 16px;
+            background: rgba(0,0,0,0.4);
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        #chemicals {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: all;
+        }
+
+        .chem-btn {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.6);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .chem-btn:hover {
+            transform: scale(1.1);
+            border-color: white;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+        }
+
+        .chem-btn.selected {
+            border-width: 5px;
+            transform: scale(1.15);
+            box-shadow: 0 0 30px rgba(255,255,255,0.8);
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <div class="spinner"></div>
+        <div id="loadingText">正在加载...</div>
+        <div id="loadingDetails">请稍候</div>
+    </div>
+
+    <div id="container"></div>
+
+    <div id="ui">
+        <div id="title">🧪 3D化学实验室 🧪</div>
+        <div id="info">阶段 1/2 | 完成: 0/6</div>
+        <div id="instructions">点击右侧选择化学品，然后点击烧杯添加</div>
+        <div id="chemicals"></div>
+    </div>
+
+    <script>
+        // CDN列表（多个备份）
+        const CDN_SOURCES = [
+            {
+                name: 'jsDelivr',
+                three: 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js',
+                controls: 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js'
+            },
+            {
+                name: 'unpkg',
+                three: 'https://unpkg.com/three@0.160.0/build/three.min.js',
+                controls: 'https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js'
+            },
+            {
+                name: 'cdnjs',
+                three: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r160/three.min.js',
+                controls: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r160/examples/js/controls/OrbitControls.min.js'
+            }
+        ];
+
+        let currentCDNIndex = 0;
+
+        function updateLoadingText(text, details = '') {
+            document.getElementById('loadingText').textContent = text;
+            document.getElementById('loadingDetails').textContent = details;
+        }
+
+        function loadScript(url, timeout = 10000) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = url;
+
+                const timer = setTimeout(() => {
+                    script.remove();
+                    reject(new Error(`加载超时: ${url}`));
+                }, timeout);
+
+                script.onload = () => {
+                    clearTimeout(timer);
+                    resolve();
+                };
+
+                script.onerror = () => {
+                    clearTimeout(timer);
+                    script.remove();
+                    reject(new Error(`加载失败: ${url}`));
+                };
+
+                document.head.appendChild(script);
+            });
+        }
+
+        async function tryLoadWithCDN(cdnIndex) {
+            const cdn = CDN_SOURCES[cdnIndex];
+            updateLoadingText('正在加载3D引擎...', `使用 ${cdn.name} (${cdnIndex + 1}/${CDN_SOURCES.length})`);
+
+            try {
+                await loadScript(cdn.three, 15000);
+                console.log('Three.js loaded from', cdn.name);
+
+                updateLoadingText('正在加载控制器...', `使用 ${cdn.name}`);
+                await loadScript(cdn.controls, 10000);
+                console.log('OrbitControls loaded from', cdn.name);
+
+                return true;
+            } catch (error) {
+                console.error(`Failed to load from ${cdn.name}:`, error);
+                return false;
+            }
+        }
+
+        async function loadThreeJS() {
+            for (let i = 0; i < CDN_SOURCES.length; i++) {
+                const success = await tryLoadWithCDN(i);
+                if (success) {
+                    return true;
+                }
+
+                if (i < CDN_SOURCES.length - 1) {
+                    updateLoadingText('切换CDN源...', `尝试备用源 ${i + 2}`);
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            }
+            return false;
+        }
+
+        // 开始加载
+        (async function() {
+            try {
+                updateLoadingText('初始化...', '准备加载资源');
+
+                const loaded = await loadThreeJS();
+
+                if (!loaded) {
+                    throw new Error('所有CDN源均加载失败');
+                }
+
+                if (typeof THREE === 'undefined') {
+                    throw new Error('Three.js未正确加载');
+                }
+
+                updateLoadingText('创建3D场景...', '即将完成');
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                initApp();
+
+            } catch (error) {
+                console.error('加载错误:', error);
+                document.getElementById('loading').innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <h2 style="color: #ff6b6b; margin-bottom: 20px;">⚠️ 加载失败</h2>
+                        <p style="margin-bottom: 15px;">${error.message}</p>
+                        <p style="font-size: 14px; opacity: 0.8; margin-bottom: 20px;">
+                            可能原因：<br>
+                            • 网络连接问题<br>
+                            • 浏览器不支持WebGL<br>
+                            • CDN服务暂时不可用
+                        </p>
+                        <button onclick="location.reload()" style="
+                            background: white;
+                            color: #667eea;
+                            border: none;
+                            padding: 12px 30px;
+                            font-size: 16px;
+                            border-radius: 25px;
+                            cursor: pointer;
+                            font-weight: bold;
+                        ">刷新重试</button>
+                    </div>
+                `;
+            }
+        })();
+
+        function initApp() {
+            console.log('开始初始化应用...');
+
+            const CHEMICALS = [
+                { name: '黄', color: 0xFFFF00 },
+                { name: '蓝', color: 0x0066FF },
+                { name: '绿', color: 0x00FF66 },
+                { name: '紫', color: 0x9933FF },
+                { name: '红', color: 0xFF3333 },
+                { name: '橙', color: 0xFF9933 },
+                { name: '青', color: 0x00FFFF }
+            ];
+
+            let selectedChem = null;
+            let beakers = [];
+            let completed = 0;
+
+            // 场景
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xd0e8ff);
+            scene.fog = new THREE.Fog(0xd0e8ff, 15, 40);
+
+            // 相机
+            const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 4, 11);
+
+            // 渲染器
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            document.getElementById('container').appendChild(renderer.domElement);
+
+            // 控制器
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.08;
+            controls.minDistance = 6;
+            controls.maxDistance = 18;
+            controls.maxPolarAngle = Math.PI / 2.2;
+
+            // 灯光
+            scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.7);
+            dirLight.position.set(6, 10, 6);
+            dirLight.castShadow = true;
+            scene.add(dirLight);
+            scene.add(new THREE.PointLight(0xffffff, 0.4).position.set(0, 6, 0));
+
+            // 地板
+            const floor = new THREE.Mesh(
+                new THREE.PlaneGeometry(40, 40),
+                new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 })
+            );
+            floor.rotation.x = -Math.PI / 2;
+            floor.position.y = -1;
+            floor.receiveShadow = true;
+            scene.add(floor);
+
+            // 桌子
+            const table = new THREE.Mesh(
+                new THREE.BoxGeometry(11, 0.25, 6),
+                new THREE.MeshStandardMaterial({ color: 0xb8b8b8, roughness: 0.6 })
+            );
+            table.position.y = -0.125;
+            table.castShadow = true;
+            table.receiveShadow = true;
+            scene.add(table);
+
+            // 创建烧杯
+            for (let i = 0; i < 6; i++) {
+                const group = new THREE.Group();
+
+                // 底座
+                const base = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.38, 0.38, 0.1, 32),
+                    new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.6, roughness: 0.4 })
+                );
+                base.position.y = 0.05;
+                base.castShadow = true;
+                group.add(base);
+
+                // 玻璃烧杯
+                const glass = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.33, 0.29, 1.1, 32, 1, true),
+                    new THREE.MeshPhysicalMaterial({
+                        color: 0xccffff,
+                        transparent: true,
+                        opacity: 0.2,
+                        roughness: 0,
+                        metalness: 0,
+                        transmission: 0.98,
+                        thickness: 0.3,
+                        side: THREE.DoubleSide
+                    })
+                );
+                glass.position.y = 0.6;
+                glass.userData.beakerIndex = i;
+                group.add(glass);
+
+                // 底部封闭
+                const bottom = new THREE.Mesh(
+                    new THREE.CircleGeometry(0.29, 32),
+                    glass.material
+                );
+                bottom.rotation.x = -Math.PI / 2;
+                bottom.position.y = 0.1;
+                group.add(bottom);
+
+                // 位置
+                const x = (i % 3 - 1) * 2.8;
+                const z = Math.floor(i / 3) * 2.2 - 1.1;
+                group.position.set(x, 0, z);
+
+                scene.add(group);
+                beakers.push({ group, glass, substances: [], liquids: [] });
+            }
+
+            // UI按钮
+            const chemsDiv = document.getElementById('chemicals');
+            CHEMICALS.forEach((chem, idx) => {
+                const btn = document.createElement('div');
+                btn.className = 'chem-btn';
+                const hex = chem.color.toString(16).padStart(6, '0');
+                btn.style.background = `radial-gradient(circle, #${hex}, #${Math.floor(chem.color * 0.65).toString(16).padStart(6, '0')})`;
+                btn.textContent = chem.name;
+                btn.onclick = () => {
+                    selectedChem = idx;
+                    document.querySelectorAll('.chem-btn').forEach((b, i) => {
+                        b.classList.toggle('selected', i === idx);
+                    });
+                    updateUI();
+                };
+                chemsDiv.appendChild(btn);
+            });
+
+            function updateUI() {
+                const inst = document.getElementById('instructions');
+                if (selectedChem === null) {
+                    inst.textContent = '👉 点击右侧选择一种化学品';
+                } else {
+                    inst.textContent = `已选：${CHEMICALS[selectedChem].name}色 | 👆 点击烧杯添加（每个3种物质会反应）`;
+                }
+                document.getElementById('info').textContent = `阶段 1/2 | 完成: ${completed}/6`;
+            }
+
+            // 点击交互
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+
+            renderer.domElement.addEventListener('click', (e) => {
+                if (selectedChem === null) return;
+
+                const rect = renderer.domElement.getBoundingClientRect();
+                mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+                raycaster.setFromCamera(mouse, camera);
+                const hits = raycaster.intersectObjects(scene.children, true);
+
+                for (let hit of hits) {
+                    if (hit.object.userData.beakerIndex !== undefined) {
+                        addToBeaker(hit.object.userData.beakerIndex);
+                        break;
+                    }
+                }
+            });
+
+            function addToBeaker(idx) {
+                const beaker = beakers[idx];
+                if (beaker.substances.length >= 3) {
+                    alert('这个烧杯已满！换一个试试~');
+                    return;
+                }
+
+                const chem = CHEMICALS[selectedChem];
+                beaker.substances.push(chem);
+
+                // 更新液体
+                beaker.liquids.forEach(l => beaker.group.remove(l));
+                beaker.liquids = [];
+
+                const height = beaker.substances.length * 0.28;
+                const color = mixColor(beaker.substances.map(s => s.color));
+
+                const liquid = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.31, 0.27, height, 32),
+                    new THREE.MeshStandardMaterial({
+                        color: color,
+                        transparent: true,
+                        opacity: 0.75,
+                        roughness: 0.3,
+                        metalness: 0.1
+                    })
+                );
+                liquid.position.y = 0.1 + height / 2;
+                beaker.group.add(liquid);
+                beaker.liquids.push(liquid);
+
+                if (beaker.substances.length === 3) {
+                    react(idx, liquid, color);
+                }
+            }
+
+            function mixColor(colors) {
+                let r = 0, g = 0, b = 0;
+                colors.forEach(c => {
+                    r += (c >> 16) & 255;
+                    g += (c >> 8) & 255;
+                    b += c & 255;
+                });
+                const n = colors.length;
+                return (Math.floor(r/n) << 16) | (Math.floor(g/n) << 8) | Math.floor(b/n);
+            }
+
+            function react(idx, liquid, color) {
+                let t = 0;
+                const interval = setInterval(() => {
+                    t += 0.15;
+                    const intensity = Math.sin(t) * 0.5 + 0.5;
+                    liquid.material.emissive = new THREE.Color(color);
+                    liquid.material.emissiveIntensity = intensity * 0.8;
+
+                    if (t > Math.PI * 6) {
+                        clearInterval(interval);
+                        liquid.material.emissiveIntensity = 0;
+                        completed++;
+                        updateUI();
+
+                        if (completed === 6) {
+                            setTimeout(() => {
+                                alert('🎉 恭喜完成阶段1！\n\n所有6个烧杯实验已完成。\n完整版会自动进入阶段2的蒸馏室。');
+                            }, 800);
+                        }
+                    }
+                }, 60);
+            }
+
+            // 响应式
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            // 动画
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+
+            // 启动
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('ui').style.display = 'block';
+            animate();
+            updateUI();
+
+            console.log('✅ 应用初始化完成！');
+        }
+    </script>
+</body>
+</html>
