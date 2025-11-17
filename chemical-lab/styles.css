@@ -130,9 +130,9 @@ body {
 /* Chemical Palette */
 .chemical-palette {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 12px;
-    margin: 10px auto;
+    margin: 10px 0 10px 20px;
     flex-wrap: wrap;
     max-width: 800px;
     transform-style: preserve-3d;
