@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemical Laboratory Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Scene 1: Beakers -->
+    <div id="scene1" class="scene active">
+        <div class="lab-header">
+            <h1>Chemical Laboratory - Scene 1</h1>
+            <p class="instructions">Add 3 substances to each beaker to create reactions!</p>
+        </div>
+
+        <!-- Chemical Substances Selector -->
+        <div class="chemical-palette">
+            <div class="chemical-item" data-color="yellow" style="background: linear-gradient(180deg, #FFE066 0%, #FFD700 100%);">
+                <span>Yellow</span>
+            </div>
+            <div class="chemical-item" data-color="blue" style="background: linear-gradient(180deg, #4DA6FF 0%, #0066CC 100%);">
+                <span>Blue</span>
+            </div>
+            <div class="chemical-item" data-color="green" style="background: linear-gradient(180deg, #66FF66 0%, #00CC00 100%);">
+                <span>Green</span>
+            </div>
+            <div class="chemical-item" data-color="purple" style="background: linear-gradient(180deg, #CC99FF 0%, #9933FF 100%);">
+                <span>Purple</span>
+            </div>
+            <div class="chemical-item" data-color="red" style="background: linear-gradient(180deg, #FF6666 0%, #CC0000 100%);">
+                <span>Red</span>
+            </div>
+            <div class="chemical-item" data-color="orange" style="background: linear-gradient(180deg, #FFB366 0%, #FF6600 100%);">
+                <span>Orange</span>
+            </div>
+        </div>
+
+        <!-- Selected Chemical Indicator -->
+        <div class="selected-chemical">
+            <p>Selected: <span id="selectedChemical">None</span></p>
+        </div>
+
+        <!-- Beaker Storage Rack -->
+        <div class="beaker-rack">
+            <div class="rack-base"></div>
+            <div class="beakers-container">
+                <div class="beaker" data-beaker="1">
+                    <div class="beaker-glass">
+                        <div class="liquid-container">
+                            <div class="liquid-layer layer-1"></div>
+                            <div class="liquid-layer layer-2"></div>
+                            <div class="liquid-layer layer-3"></div>
+                        </div>
+                        <div class="reaction-effect"></div>
+                    </div>
+                    <div class="beaker-label">Beaker 1</div>
+                    <div class="beaker-status">0/3</div>
+                </div>
+
+                <div class="beaker" data-beaker="2">
+                    <div class="beaker-glass">
+                        <div class="liquid-container">
+                            <div class="liquid-layer layer-1"></div>
+                            <div class="liquid-layer layer-2"></div>
+                            <div class="liquid-layer layer-3"></div>
+                        </div>
+                        <div class="reaction-effect"></div>
+                    </div>
+                    <div class="beaker-label">Beaker 2</div>
+                    <div class="beaker-status">0/3</div>
+                </div>
+
+                <div class="beaker" data-beaker="3">
+                    <div class="beaker-glass">
+                        <div class="liquid-container">
+                            <div class="liquid-layer layer-1"></div>
+                            <div class="liquid-layer layer-2"></div>
+                            <div class="liquid-layer layer-3"></div>
+                        </div>
+                        <div class="reaction-effect"></div>
+                    </div>
+                    <div class="beaker-label">Beaker 3</div>
+                    <div class="beaker-status">0/3</div>
+                </div>
+
+                <div class="beaker" data-beaker="4">
+                    <div class="beaker-glass">
+                        <div class="liquid-container">
+                            <div class="liquid-layer layer-1"></div>
+                            <div class="liquid-layer layer-2"></div>
+                            <div class="liquid-layer layer-3"></div>
+                        </div>
+                        <div class="reaction-effect"></div>
+                    </div>
+                    <div class="beaker-label">Beaker 4</div>
+                    <div class="beaker-status">0/3</div>
+                </div>
+
+                <div class="beaker" data-beaker="5">
+                    <div class="beaker-glass">
+                        <div class="liquid-container">
+                            <div class="liquid-layer layer-1"></div>
+                            <div class="liquid-layer layer-2"></div>
+                            <div class="liquid-layer layer-3"></div>
+                        </div>
+                        <div class="reaction-effect"></div>
+                    </div>
+                    <div class="beaker-label">Beaker 5</div>
+                    <div class="beaker-status">0/3</div>
+                </div>
+
+                <div class="beaker" data-beaker="6">
+                    <div class="beaker-glass">
+                        <div class="liquid-container">
+                            <div class="liquid-layer layer-1"></div>
+                            <div class="liquid-layer layer-2"></div>
+                            <div class="liquid-layer layer-3"></div>
+                        </div>
+                        <div class="reaction-effect"></div>
+                    </div>
+                    <div class="beaker-label">Beaker 6</div>
+                    <div class="beaker-status">0/3</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+            <span class="progress-text">0/6 Beakers Complete</span>
+        </div>
+
+        <!-- Clear Beaker Button -->
+        <div class="controls">
+            <button id="clearBeaker" class="btn-control">Clear Selected Beaker</button>
+            <button id="proceedScene2" class="btn-proceed" disabled>Proceed to Scene 2</button>
+        </div>
+    </div>
+
+    <!-- Scene 2: Distillation Apparatus -->
+    <div id="scene2" class="scene">
+        <div class="lab-header">
+            <h1>Chemical Laboratory - Scene 2</h1>
+            <p class="instructions">Pour your beaker mixtures into the distillation apparatus!</p>
+        </div>
+
+        <!-- Distillation Apparatus -->
+        <div class="distillation-container">
+            <svg class="distillation-apparatus" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+                <!-- Central Flask -->
+                <ellipse cx="400" cy="100" rx="60" ry="15" fill="#e0e0e0" opacity="0.5"/>
+                <rect x="395" y="100" width="10" height="80" fill="#d0d0d0"/>
+                <circle cx="400" cy="200" r="80" fill="url(#glassGradient)" stroke="#999" stroke-width="3"/>
+
+                <!-- 6 Branch Tubes -->
+                <!-- Branch 1 (Top Left) -->
+                <path d="M 340 160 Q 280 140 220 160" stroke="#999" stroke-width="8" fill="none"/>
+                <circle cx="220" cy="160" r="12" fill="#ccc" stroke="#999" stroke-width="2"/>
+                <circle cx="220" cy="160" r="8" class="branch-fill branch-1" fill="transparent"/>
+
+                <!-- Branch 2 (Middle Left) -->
+                <path d="M 330 200 Q 280 200 220 220" stroke="#999" stroke-width="8" fill="none"/>
+                <circle cx="220" cy="220" r="12" fill="#ccc" stroke="#999" stroke-width="2"/>
+                <circle cx="220" cy="220" r="8" class="branch-fill branch-2" fill="transparent"/>
+
+                <!-- Branch 3 (Bottom Left) -->
+                <path d="M 340 240 Q 280 260 220 280" stroke="#999" stroke-width="8" fill="none"/>
+                <circle cx="220" cy="280" r="12" fill="#ccc" stroke="#999" stroke-width="2"/>
+                <circle cx="220" cy="280" r="8" class="branch-fill branch-3" fill="transparent"/>
+
+                <!-- Branch 4 (Top Right) -->
+                <path d="M 460 160 Q 520 140 580 160" stroke="#999" stroke-width="8" fill="none"/>
+                <circle cx="580" cy="160" r="12" fill="#ccc" stroke="#999" stroke-width="2"/>
+                <circle cx="580" cy="160" r="8" class="branch-fill branch-4" fill="transparent"/>
+
+                <!-- Branch 5 (Middle Right) -->
+                <path d="M 470 200 Q 520 200 580 220" stroke="#999" stroke-width="8" fill="none"/>
+                <circle cx="580" cy="220" r="12" fill="#ccc" stroke="#999" stroke-width="2"/>
+                <circle cx="580" cy="220" r="8" class="branch-fill branch-5" fill="transparent"/>
+
+                <!-- Branch 6 (Bottom Right) -->
+                <path d="M 460 240 Q 520 260 580 280" stroke="#999" stroke-width="8" fill="none"/>
+                <circle cx="580" cy="280" r="12" fill="#ccc" stroke="#999" stroke-width="2"/>
+                <circle cx="580" cy="280" r="8" class="branch-fill branch-6" fill="transparent"/>
+
+                <!-- Central Liquid -->
+                <circle cx="400" cy="200" r="70" class="central-liquid" fill="transparent"/>
+
+                <!-- Glass Gradient Definition -->
+                <defs>
+                    <radialGradient id="glassGradient">
+                        <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.3" />
+                        <stop offset="70%" style="stop-color:#e0e0e0;stop-opacity:0.5" />
+                        <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.7" />
+                    </radialGradient>
+                </defs>
+            </svg>
+
+            <!-- Final Reaction Display -->
+            <div class="final-reaction"></div>
+        </div>
+
+        <!-- Beaker Selection for Pouring -->
+        <div class="pour-controls">
+            <h3>Select a beaker to pour:</h3>
+            <div class="beaker-buttons">
+                <button class="pour-btn" data-beaker="1">Beaker 1</button>
+                <button class="pour-btn" data-beaker="2">Beaker 2</button>
+                <button class="pour-btn" data-beaker="3">Beaker 3</button>
+                <button class="pour-btn" data-beaker="4">Beaker 4</button>
+                <button class="pour-btn" data-beaker="5">Beaker 5</button>
+                <button class="pour-btn" data-beaker="6">Beaker 6</button>
+            </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-bar">
+            <div class="progress-fill-scene2"></div>
+            <span class="progress-text-scene2">0/6 Beakers Poured</span>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button id="backToScene1" class="btn-control">Back to Scene 1</button>
+            <button id="resetLab" class="btn-control">Reset Laboratory</button>
+            <button id="triggerReaction" class="btn-proceed" disabled>Trigger Final Reaction</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
