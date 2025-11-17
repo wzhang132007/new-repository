@@ -208,7 +208,12 @@ function completeBeaker(beakerNum) {
     // Check if all beakers are complete
     if (gameState.completedBeakers === 6) {
         document.getElementById('proceedScene2').disabled = false;
-        showNotification('All beakers complete! Ready for Scene 2!', 'success');
+        showNotification('All beakers complete! Transitioning to Scene 2 in 3 seconds...', 'success', 4000);
+
+        // Auto transition to Scene 2 after 3 seconds
+        setTimeout(() => {
+            switchScene(2);
+        }, 3000);
     }
 }
 
@@ -333,12 +338,20 @@ function switchScene(sceneNum) {
     const scene2 = document.getElementById('scene2');
 
     if (sceneNum === 1) {
-        scene1.classList.add('active');
-        scene2.classList.remove('active');
+        // 3D transition from Scene 2 to Scene 1
+        scene2.classList.add('exiting');
+        setTimeout(() => {
+            scene2.classList.remove('active', 'exiting');
+            scene1.classList.add('active');
+        }, 1200);
     } else {
-        scene1.classList.remove('active');
-        scene2.classList.add('active');
-        initializeScene2();
+        // 3D transition from Scene 1 to Scene 2
+        scene1.classList.add('exiting');
+        setTimeout(() => {
+            scene1.classList.remove('active', 'exiting');
+            scene2.classList.add('active');
+            initializeScene2();
+        }, 1200);
     }
 }
 
