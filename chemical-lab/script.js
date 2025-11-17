@@ -263,27 +263,40 @@ function showReactionEffect(beakerNum, reaction) {
 
 // Create explosion effect with fire particles
 function createExplosionEffect(container, effectElement) {
+    let particleCount = 0;
+    const maxParticles = 3; // Start with fewer particles
+
     const createFlame = () => {
         const flame = document.createElement('div');
         flame.className = 'flame-particle';
         flame.textContent = '🔥';
-        flame.style.left = Math.random() * 80 + 10 + '%';
-        flame.style.animationDelay = Math.random() * 0.5 + 's';
-        flame.style.animationDuration = Math.random() * 1 + 1 + 's';
+        flame.style.left = Math.random() * 70 + 15 + '%';
+        flame.style.animationDelay = Math.random() * 0.3 + 's';
+        flame.style.animationDuration = Math.random() * 1.5 + 2.5 + 's';
+        flame.style.opacity = '0';
         effectElement.appendChild(flame);
 
-        setTimeout(() => flame.remove(), 2000);
+        // Gradually fade in
+        setTimeout(() => {
+            flame.style.transition = 'opacity 0.5s ease-in';
+            flame.style.opacity = '1';
+        }, 50);
+
+        setTimeout(() => flame.remove(), 4000);
     };
 
-    // Create initial flames
-    for (let i = 0; i < 8; i++) {
-        setTimeout(() => createFlame(), i * 100);
+    // Gradually introduce flames
+    let delay = 0;
+    for (let i = 0; i < maxParticles; i++) {
+        setTimeout(() => createFlame(), delay);
+        delay += 300; // Stagger initial appearance
     }
 
-    // Continue creating flames
+    // Continue creating flames gradually
     const flameInterval = setInterval(() => {
+        if (particleCount < 10) particleCount++;
         createFlame();
-    }, 500);
+    }, 800);
 
     // Store interval to clear later if needed
     effectElement.flameInterval = flameInterval;
@@ -291,6 +304,8 @@ function createExplosionEffect(container, effectElement) {
 
 // Create bubbles effect
 function createBubblesEffect(container, effectElement) {
+    const maxParticles = 3; // Start with fewer particles
+
     const createBubble = () => {
         const bubble = document.createElement('div');
         bubble.className = 'bubble-particle';
@@ -300,25 +315,37 @@ function createBubblesEffect(container, effectElement) {
         bubble.style.left = Math.random() * 80 + 10 + '%';
         bubble.style.animationDelay = Math.random() * 0.5 + 's';
         bubble.style.animationDuration = Math.random() * 2 + 2 + 's';
+        bubble.style.opacity = '0';
         effectElement.appendChild(bubble);
+
+        // Gradually fade in
+        setTimeout(() => {
+            bubble.style.transition = 'opacity 0.5s ease-in';
+            bubble.style.opacity = '1';
+        }, 50);
 
         setTimeout(() => bubble.remove(), 4000);
     };
 
-    // Create bubbles continuously
-    for (let i = 0; i < 5; i++) {
-        setTimeout(() => createBubble(), i * 200);
+    // Gradually introduce bubbles
+    let delay = 0;
+    for (let i = 0; i < maxParticles; i++) {
+        setTimeout(() => createBubble(), delay);
+        delay += 300; // Stagger initial appearance
     }
 
+    // Continue creating bubbles gradually
     const bubbleInterval = setInterval(() => {
         createBubble();
-    }, 600);
+    }, 800);
 
     effectElement.bubbleInterval = bubbleInterval;
 }
 
 // Create steam/gas effect
 function createSteamEffect(container, effectElement) {
+    const maxParticles = 3; // Start with fewer particles
+
     const createSteam = () => {
         const steam = document.createElement('div');
         steam.className = 'steam-particle';
@@ -326,15 +353,26 @@ function createSteamEffect(container, effectElement) {
         steam.style.left = Math.random() * 60 + 20 + '%';
         steam.style.animationDelay = Math.random() * 0.3 + 's';
         steam.style.animationDuration = Math.random() * 1.5 + 2 + 's';
+        steam.style.opacity = '0';
         effectElement.appendChild(steam);
 
-        setTimeout(() => steam.remove(), 3500);
+        // Gradually fade in
+        setTimeout(() => {
+            steam.style.transition = 'opacity 0.5s ease-in';
+            steam.style.opacity = '1';
+        }, 50);
+
+        setTimeout(() => steam.remove(), 4000);
     };
 
-    for (let i = 0; i < 4; i++) {
-        setTimeout(() => createSteam(), i * 250);
+    // Gradually introduce steam
+    let delay = 0;
+    for (let i = 0; i < maxParticles; i++) {
+        setTimeout(() => createSteam(), delay);
+        delay += 300; // Stagger initial appearance
     }
 
+    // Continue creating steam gradually
     const steamInterval = setInterval(() => {
         createSteam();
     }, 800);
@@ -344,10 +382,19 @@ function createSteamEffect(container, effectElement) {
 
 // Create glow effect
 function createGlowEffect(container, effectElement) {
+    const maxParticles = 3; // Start with fewer particles
+
     const glow = document.createElement('div');
     glow.className = 'glow-particle';
     glow.textContent = '✨';
+    glow.style.opacity = '0';
     effectElement.appendChild(glow);
+
+    // Gradually fade in main glow
+    setTimeout(() => {
+        glow.style.transition = 'opacity 0.5s ease-in';
+        glow.style.opacity = '1';
+    }, 50);
 
     const createSparkle = () => {
         const sparkle = document.createElement('div');
@@ -356,20 +403,37 @@ function createGlowEffect(container, effectElement) {
         sparkle.style.left = Math.random() * 80 + 10 + '%';
         sparkle.style.bottom = Math.random() * 60 + 20 + '%';
         sparkle.style.animationDelay = Math.random() * 0.5 + 's';
+        sparkle.style.opacity = '0';
         effectElement.appendChild(sparkle);
 
-        setTimeout(() => sparkle.remove(), 2000);
+        // Gradually fade in
+        setTimeout(() => {
+            sparkle.style.transition = 'opacity 0.5s ease-in';
+            sparkle.style.opacity = '1';
+        }, 50);
+
+        setTimeout(() => sparkle.remove(), 2500);
     };
 
+    // Gradually introduce sparkles
+    let delay = 0;
+    for (let i = 0; i < maxParticles; i++) {
+        setTimeout(() => createSparkle(), delay);
+        delay += 300; // Stagger initial appearance
+    }
+
+    // Continue creating sparkles gradually
     const sparkleInterval = setInterval(() => {
         createSparkle();
-    }, 400);
+    }, 800);
 
     effectElement.sparkleInterval = sparkleInterval;
 }
 
 // Create freeze effect
 function createFreezeEffect(container, effectElement) {
+    const maxParticles = 3; // Start with fewer particles
+
     const createIce = () => {
         const ice = document.createElement('div');
         ice.className = 'ice-particle';
@@ -377,18 +441,29 @@ function createFreezeEffect(container, effectElement) {
         ice.style.left = Math.random() * 80 + 10 + '%';
         ice.style.animationDelay = Math.random() * 0.5 + 's';
         ice.style.animationDuration = Math.random() * 1 + 2 + 's';
+        ice.style.opacity = '0';
         effectElement.appendChild(ice);
 
-        setTimeout(() => ice.remove(), 3000);
+        // Gradually fade in
+        setTimeout(() => {
+            ice.style.transition = 'opacity 0.5s ease-in';
+            ice.style.opacity = '1';
+        }, 50);
+
+        setTimeout(() => ice.remove(), 3500);
     };
 
-    for (let i = 0; i < 6; i++) {
-        setTimeout(() => createIce(), i * 200);
+    // Gradually introduce ice crystals
+    let delay = 0;
+    for (let i = 0; i < maxParticles; i++) {
+        setTimeout(() => createIce(), delay);
+        delay += 300; // Stagger initial appearance
     }
 
+    // Continue creating ice gradually
     const iceInterval = setInterval(() => {
         createIce();
-    }, 700);
+    }, 800);
 
     effectElement.iceInterval = iceInterval;
 }
